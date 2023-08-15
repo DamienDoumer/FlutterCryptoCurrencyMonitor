@@ -1,0 +1,213 @@
+{
+    "id": "bitcoin",
+    "symbol": "btc",
+    "name": "Bitcoin",
+    "asset_platform_id": null,
+    "platforms": {
+        "": ""
+    },
+    "detail_platforms": {
+        "": {
+            "decimal_place": null,
+            "contract_address": ""
+        }
+    },
+    "block_time_in_minutes": 10,
+    "hashing_algorithm": "SHA-256",
+    "categories": [
+        "Cryptocurrency",
+        "Layer 1 (L1)"
+    ],
+    "public_notice": null,
+    "additional_notices": [],
+    "localization": {
+        "en": "Bitcoin",
+        "fr": "Bitcoin"
+    },
+    "description": {
+        "en": "Bitcoin is the first successful internet money based on peer-to-peer technology; whereby no central bank or authority is involved in the transaction and production of the Bitcoin currency. It was created by an anonymous individual/group under the name, Satoshi Nakamoto. The source code is available publicly as an open source project, anybody can look at it and be part of the developmental process.\r\n\r\nBitcoin is changing the way we see money as we speak. The idea was to produce a means of exchange, independent of any central authority, that could be transferred electronically in a secure, verifiable and immutable way. It is a decentralized peer-to-peer internet currency making mobile payment easy, very low transaction fees, protects your identity, and it works anywhere all the time with no central authority and banks.\r\n\r\nBitcoin is designed to have only 21 million BTC ever created, thus making it a deflationary currency. Bitcoin uses the <a href=\"https://www.coingecko.com/en?hashing_algorithm=SHA-256\">SHA-256</a> hashing algorithm with an average transaction confirmation time of 10 minutes. Miners today are mining Bitcoin using ASIC chip dedicated to only mining Bitcoin, and the hash rate has shot up to peta hashes.\r\n\r\nBeing the first successful online cryptography currency, Bitcoin has inspired other alternative currencies such as <a href=\"https://www.coingecko.com/en/coins/litecoin\">Litecoin</a>, <a href=\"https://www.coingecko.com/en/coins/peercoin\">Peercoin</a>, <a href=\"https://www.coingecko.com/en/coins/primecoin\">Primecoin</a>, and so on.\r\n\r\nThe cryptocurrency then took off with the innovation of the turing-complete smart contract by <a href=\"https://www.coingecko.com/en/coins/ethereum\">Ethereum</a> which led to the development of other amazing projects such as <a href=\"https://www.coingecko.com/en/coins/eos\">EOS</a>, <a href=\"https://www.coingecko.com/en/coins/tron\">Tron</a>, and even crypto-collectibles such as <a href=\"https://www.coingecko.com/buzz/ethereum-still-king-dapps-cryptokitties-need-1-billion-on-eos\">CryptoKitties</a>.",
+        "fr": ""
+    },
+    "links": {
+        "homepage": [
+            "http://www.bitcoin.org"
+        ],
+        "blockchain_site": [
+            "https://blockchair.com/bitcoin/",
+            "https://btc.com/",
+            "https://btc.tokenview.io/",
+            "https://www.oklink.com/btc",
+            "https://3xpl.com/bitcoin",
+            "",
+            "",
+            "",
+            "",
+            ""
+        ],
+        "official_forum_url": [
+            "https://bitcointalk.org/",
+            "",
+            ""
+        ],
+        "chat_url": [
+            "",
+            "",
+            ""
+        ],
+        "announcement_url": [
+            "",
+            ""
+        ],
+        "twitter_screen_name": "bitcoin",
+        "facebook_username": "bitcoins",
+        "bitcointalk_thread_identifier": null,
+        "telegram_channel_identifier": "",
+        "subreddit_url": "https://www.reddit.com/r/Bitcoin/",
+        "repos_url": {
+            "github": [
+                "https://github.com/bitcoin/bitcoin",
+                "https://github.com/bitcoin/bips"
+            ],
+            "bitbucket": []
+        }
+    },
+    "image": {
+        "thumb": "https://assets.coingecko.com/coins/images/1/thumb/bitcoin.png?1547033579",
+        "small": "https://assets.coingecko.com/coins/images/1/small/bitcoin.png?1547033579",
+        "large": "https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1547033579"
+    },
+    "country_origin": "",
+    "genesis_date": "2009-01-03",
+    "sentiment_votes_up_percentage": 77.82,
+    "sentiment_votes_down_percentage": 22.18,
+    "watchlist_portfolio_users": 1328180,
+    "market_cap_rank": 1,
+    "coingecko_rank": 1,
+    "coingecko_score": 83.151,
+    "developer_score": 99.241,
+    "community_score": 83.341,
+    "liquidity_score": 100.011,
+    "public_interest_score": 0.073,
+    "market_data": {
+        "current_price": {
+            "eth": 15.936104,
+            "eur": 26874,
+            "gbp": 23078,
+            "usd": 29340
+        },
+        "total_value_locked": null,
+        "mcap_to_tvl_ratio": null,
+        "fdv_to_tvl_ratio": null,
+        "roi": null,
+        "ath": {
+            "eth": 624.203,
+            "eur": 59717,
+            "gbp": 51032,
+            "usd": 69045
+        },
+        "ath_date": {
+            "eth": "2015-10-20T00:00:00.000Z",
+            "eur": "2021-11-10T14:24:11.849Z",
+            "gbp": "2021-11-10T14:24:11.849Z",
+            "usd": "2021-11-10T14:24:11.849Z"
+        },
+        "atl": {
+            "eth": 6.779735,
+            "eur": 51.3,
+            "gbp": 43.9,
+            "usd": 67.81
+        },
+        "atl_date": {
+            "eth": "2017-06-12T00:00:00.000Z",
+            "eur": "2013-07-05T00:00:00.000Z",
+            "gbp": "2013-07-05T00:00:00.000Z",
+            "usd": "2013-07-06T00:00:00.000Z"
+        },
+        "market_cap": {
+            "eth": 310098711,
+            "eur": 522765850441,
+            "gbp": 449641987671,
+            "usd": 570469042220
+        },
+        "market_cap_rank": 1,
+        "fully_diluted_valuation": {
+            "aed": 2261449077494,
+            "ars": 215440125007855,
+            "aud": 946634574400,
+            "bch": 2692354614,
+            "bdt": 67622291988794,
+            "bhd": 232103809891,
+            "bmd": 615684469917,
+            "bnb": 2576818075,
+            "brl": 3056011434878,
+            "btc": 21000000,
+            "cad": 828179960810,
+            "chf": 540387490615,
+            "clp": 529519428351722,
+            "cny": 4453799886929,
+            "czk": 13578243731092,
+            "dkk": 4204437209977,
+            "dot": 124398160791,
+            "eos": 865252603291,
+            "eth": 334677163,
+            "eur": 564200318858,
+            "gbp": 485280652135,
+            "hkd": 4816456510244,
+            "huf": 217278127855898,
+            "idr": 9447212397862040,
+            "ils": 2309739057523,
+            "inr": 51275563317328,
+            "jpy": 89556363560145,
+            "krw": 822656864147541,
+            "kwd": 189476279932,
+            "lkr": 198925241825335,
+            "ltc": 7553400778,
+            "mmk": 1297351274350220,
+            "mxn": 10501899932280,
+            "myr": 2850926937949,
+            "ngn": 475223379824799,
+            "nok": 6439765258150,
+            "nzd": 1028805670808,
+            "php": 34942247947724,
+            "pkr": 175918063801375,
+            "pln": 2510025525378,
+            "rub": 59173436866417,
+            "sar": 2309783386805,
+            "sek": 6639025995679,
+            "sgd": 834908160697,
+            "thb": 21741357843928,
+            "try": 16659490225339,
+            "twd": 19648337872762,
+            "uah": 22818066844918,
+            "usd": 615684469917,
+            "vef": 61648485973,
+            "vnd": 14697648723076244,
+            "xag": 27216787599,
+            "xau": 323148151,
+            "xdr": 462248511800,
+            "xlm": 4581052380620,
+            "xrp": 979817019681,
+            "yfi": 99230253,
+            "zar": 11744615936894,
+            "bits": 20995631636291,
+            "link": 84094707362,
+            "sats": 2099563163629076
+        },
+        "total_volume": {
+            "eth": 6497095,
+            "eur": 10956423332,
+            "gbp": 9408637823,
+            "usd": 11961617891
+        },
+        "total_supply": 21000000.0,
+        "max_supply": 21000000.0,
+        "circulating_supply": 19457775.0,
+        "last_updated": "2023-08-15T06:07:15.733Z"
+    },
+    "public_interest_stats": {
+        "alexa_rank": 9440,
+        "bing_matches": null
+    },
+    "status_updates": [],
+    "last_updated": "2023-08-15T06:07:15.733Z"
+}
