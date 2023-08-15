@@ -1,3 +1,18 @@
+
+import 'dart:convert';
+
+import 'package:crypto_currency_monitor/data/detail_platform.dart';
+import 'package:crypto_currency_monitor/data/image.dart';
+import 'package:crypto_currency_monitor/data/market_data.dart';
+import 'package:crypto_currency_monitor/data/platforms.dart';
+import 'package:crypto_currency_monitor/data/public_interest_stats.dart';
+import 'package:crypto_currency_monitor/data/tion.dart';
+import 'package:json_annotation/json_annotation.dart';
+
+import 'links.dart';
+part 'detailed_crypto_currency.g.dart';
+
+@JsonSerializable(fieldRename: FieldRename.snake)
 class DetailedCryptoCurrency {
     String id;
     String symbol;
@@ -64,164 +79,15 @@ class DetailedCryptoCurrency {
         required this.statusUpdates,
         required this.lastUpdated,
     });
-}
+    
+  String toJson() {
+    Map<String, dynamic> curMap = _$DetailedCryptoCurrencyToJson(this);
+    var json = jsonEncode(curMap);
+    return json;
+  }
 
-class Tion {
-    String en;
-    String fr;
-
-    Tion({
-        required this.en,
-        required this.fr,
-    });
-
-}
-
-class DetailPlatforms {
-    Empty empty;
-
-    DetailPlatforms({
-        required this.empty,
-    });
-
-}
-
-class Empty {
-    dynamic decimalPlace;
-    String contractAddress;
-
-    Empty({
-        required this.decimalPlace,
-        required this.contractAddress,
-    });
-
-}
-
-class Image {
-    String thumb;
-    String small;
-    String large;
-
-    Image({
-        required this.thumb,
-        required this.small,
-        required this.large,
-    });
-
-}
-
-class Links {
-    List<String> homepage;
-    List<String> blockchainSite;
-    List<String> officialForumUrl;
-    List<String> chatUrl;
-    List<String> announcementUrl;
-    String twitterScreenName;
-    String facebookUsername;
-    dynamic bitcointalkThreadIdentifier;
-    String telegramChannelIdentifier;
-    String subredditUrl;
-    ReposUrl reposUrl;
-
-    Links({
-        required this.homepage,
-        required this.blockchainSite,
-        required this.officialForumUrl,
-        required this.chatUrl,
-        required this.announcementUrl,
-        required this.twitterScreenName,
-        required this.facebookUsername,
-        required this.bitcointalkThreadIdentifier,
-        required this.telegramChannelIdentifier,
-        required this.subredditUrl,
-        required this.reposUrl,
-    });
-
-}
-
-class ReposUrl {
-    List<String> github;
-    List<dynamic> bitbucket;
-
-    ReposUrl({
-        required this.github,
-        required this.bitbucket,
-    });
-
-}
-
-class MarketData {
-    Map<String, double> currentPrice;
-    dynamic totalValueLocked;
-    dynamic mcapToTvlRatio;
-    dynamic fdvToTvlRatio;
-    dynamic roi;
-    Map<String, double> ath;
-    Date athDate;
-    Map<String, double> atl;
-    Date atlDate;
-    Map<String, double> marketCap;
-    int marketCapRank;
-    Map<String, double> fullyDilutedValuation;
-    Map<String, double> totalVolume;
-    int totalSupply;
-    int maxSupply;
-    int circulatingSupply;
-    DateTime lastUpdated;
-
-    MarketData({
-        required this.currentPrice,
-        required this.totalValueLocked,
-        required this.mcapToTvlRatio,
-        required this.fdvToTvlRatio,
-        required this.roi,
-        required this.ath,
-        required this.athDate,
-        required this.atl,
-        required this.atlDate,
-        required this.marketCap,
-        required this.marketCapRank,
-        required this.fullyDilutedValuation,
-        required this.totalVolume,
-        required this.totalSupply,
-        required this.maxSupply,
-        required this.circulatingSupply,
-        required this.lastUpdated,
-    });
-
-}
-
-class Date {
-    DateTime eth;
-    DateTime eur;
-    DateTime gbp;
-    DateTime usd;
-
-    Date({
-        required this.eth,
-        required this.eur,
-        required this.gbp,
-        required this.usd,
-    });
-
-}
-
-class Platforms {
-    String empty;
-
-    Platforms({
-        required this.empty,
-    });
-
-}
-
-class PublicInterestStats {
-    int alexaRank;
-    dynamic bingMatches;
-
-    PublicInterestStats({
-        required this.alexaRank,
-        required this.bingMatches,
-    });
+  DetailedCryptoCurrency fromJson(Map<String, dynamic> map){
+    return _$DetailedCryptoCurrencyFromJson(map);
+  }
 
 }
