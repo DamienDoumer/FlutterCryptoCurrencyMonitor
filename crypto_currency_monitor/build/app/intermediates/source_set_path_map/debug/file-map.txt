@@ -1,0 +1,12 @@
+com.example.crypto_currency_monitor.app-debug-0 C:\REPOS\Mine\FlutterCryptoCurrencyMonitor\crypto_currency_monitor\android\app\src\debug\res
+com.example.crypto_currency_monitor.app-main-1 C:\REPOS\Mine\FlutterCryptoCurrencyMonitor\crypto_currency_monitor\android\app\src\main\res
+com.example.crypto_currency_monitor.app-pngs-2 C:\REPOS\Mine\FlutterCryptoCurrencyMonitor\crypto_currency_monitor\build\app\generated\res\pngs\debug
+com.example.crypto_currency_monitor.app-resValues-3 C:\REPOS\Mine\FlutterCryptoCurrencyMonitor\crypto_currency_monitor\build\app\generated\res\resValues\debug
+com.example.crypto_currency_monitor.app-rs-4 C:\REPOS\Mine\FlutterCryptoCurrencyMonitor\crypto_currency_monitor\build\app\generated\res\rs\debug
+com.example.crypto_currency_monitor.app-mergeDebugResources-5 C:\REPOS\Mine\FlutterCryptoCurrencyMonitor\crypto_currency_monitor\build\app\intermediates\incremental\debug\mergeDebugResources\merged.dir
+com.example.crypto_currency_monitor.app-mergeDebugResources-6 C:\REPOS\Mine\FlutterCryptoCurrencyMonitor\crypto_currency_monitor\build\app\intermediates\incremental\debug\mergeDebugResources\stripped.dir
+com.example.crypto_currency_monitor.app-merged_res-7 C:\REPOS\Mine\FlutterCryptoCurrencyMonitor\crypto_currency_monitor\build\app\intermediates\merged_res\debug
+com.example.crypto_currency_monitor.app-jetified-window-1.0.0-beta04-8 C:\Users\DamienKake\.gradle\caches\transforms-3\25cee5f028ac2a6b79fd6278ff5b59e2\transformed\jetified-window-1.0.0-beta04\res
+com.example.crypto_currency_monitor.app-jetified-annotation-experimental-1.1.0-9 C:\Users\DamienKake\.gradle\caches\transforms-3\6c0c163cc77ae6c91f9f7dfcd179c29c\transformed\jetified-annotation-experimental-1.1.0\res
+com.example.crypto_currency_monitor.app-core-1.6.0-10 C:\Users\DamienKake\.gradle\caches\transforms-3\7e9df2ac2213a6bd3cef0f2f27870d79\transformed\core-1.6.0\res
+com.example.crypto_currency_monitor.app-jetified-window-java-1.0.0-beta04-11 C:\Users\DamienKake\.gradle\caches\transforms-3\ae81e06d24c799147c26814497a2a305\transformed\jetified-window-java-1.0.0-beta04\res
