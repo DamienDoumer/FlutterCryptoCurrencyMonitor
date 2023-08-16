@@ -1,3 +1,6 @@
 {
-  "helloWorld": "Bonjour le monde!"
+  "coin": "Devise",
+  "price": "Prix {currency}",
+  "marketCap": "capitalisation boursière",
+  "loading": "Chargement..."
 }

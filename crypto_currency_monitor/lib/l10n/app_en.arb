@@ -1,6 +1,21 @@
 {
-  "helloWorld": "Hello World!",
-  "@helloWorld": {
-    "description": "The conventional newborn programmer greeting"
-  }
+  "coin": "coin",
+  "@coin": {
+    "description": "The crypto currency"
+  },
+  "price": "Price {currency}",
+  "@price": {
+    "description": "The crypto currency's price",
+    "placeholders": {
+      "currency": {
+        "type": "String",
+        "example": "USD"
+      }
+    }
+  },
+  "marketCap": "Market cap",
+  "@marketCap": {
+    "description": "The crypto currency's Market Cap"
+  },
+  "loading": "Loading..."
 }
