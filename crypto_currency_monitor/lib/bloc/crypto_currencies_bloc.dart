@@ -10,28 +10,53 @@ import '../infrastructure_services/shared/base_coin_geko_api_client.dart';
 
 class CryptoCurrenciesBloc implements BaseBloc {
   
-  late BaseCoinGekoAPIClient _apiClient;
-  List<String> fiatCurrencies = [ "USD", "EUR" ];
-  final _fiatCurrencyController = StreamController<String?>();
-  Sink<String?> get fiatCurrencySelection => _fiatCurrencyController.sink;
-  late Stream<List<CryptoCurrency>?> cryptoCurrenciesStream;
+  late String _locale;
+  late String _language;
 
-  CryptoCurrenciesBloc(BaseCoinGekoAPIClient apiClient) {
-    _apiClient = apiClient;
+  String get locale => _locale;
+  String get language => _language;
+
+  set locale(String locale) {
+    _locale = locale;
+  }
+  set language(String language) {
+    _language = language;
   }
 
-  @override
-  Future initialize() async {
-    // cryptoCurrenciesStream = _fiatCurrencyController.stream
-    //   .startWith(fiatCurrencies[0])
-      
+  late final BaseCoinGekoAPIClient apiClient;
+  List<String> fiatCurrencies = [ "USD", "EUR" ];
+  final _fiatCurrencyController = StreamController<String?>();
+  final _currenciesController = StreamController<List<CryptoCurrency>?>();
 
-    await Future.delayed(const Duration(seconds: 5));
+  Sink<String?> get fiatCurrencySelection => _fiatCurrencyController.sink;
+  Stream<List<CryptoCurrency>?> get cryptoCurrenciesStream => _currenciesController.stream;
+
+  CryptoCurrenciesBloc({required BaseCoinGekoAPIClient this.apiClient});
+
+  @override
+  Future initialize() {
+
+    _fiatCurrencyController.stream.listen((currency) async => {
+      if (currency != null)
+        await _loadCurrencies(currency)
+    });
+
+    return _loadCurrencies(fiatCurrencies[0]);
+    // await Future.delayed(const Duration(seconds: 5));
+  }
+
+  Future _loadCurrencies(String fiatCurrency) async {
+    try {
+      var currencies = await apiClient.getCryptoCurrencies(fiatCurrency, language);
+      _currenciesController.add(currencies);
+    } catch (e) {
+      _currenciesController.addError(e.toString());
+    }
   }
   
   @override
   void dispose() {
-
+    _fiatCurrencyController.close();
+    _currenciesController.close();
   }
-  
 }

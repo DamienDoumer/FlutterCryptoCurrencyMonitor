@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 
+import 'base_bloc.dart';
 import 'bloc.dart';
 
 
@@ -28,7 +29,9 @@ class BlocProvider<T extends Bloc> extends StatefulWidget {
 class _BlocProviderState extends State<BlocProvider> {
   
   @override
-  Widget build(BuildContext context) => widget.child;
+  Widget build(BuildContext context) {
+    return widget.child;
+  }
 
   // @override
   // void initState() async {

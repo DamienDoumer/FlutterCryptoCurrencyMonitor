@@ -8,13 +8,13 @@ import 'dart:convert';
 class CoinGekoAPIClient implements BaseCoinGekoAPIClient {
 
   @override
-  Future<List<CryptoCurrency>> getCryptoCurrencies(String fiatCurrency, String locale) async {
-    var url = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=$fiatCurrency&order=market_cap_desc&per_page=100&page=1&sparkline=false&locale=$locale";
+  Future<List<CryptoCurrency>> getCryptoCurrencies(String? fiatCurrency, String languageCode) async {
+    var url = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=$fiatCurrency&order=market_cap_desc&per_page=100&page=1&sparkline=false&locale=$languageCode";
     var response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
       final parsed = json.decode(response.body).cast<Map<String, dynamic>>();
-      return parsed.map<CryptoCurrency>((json) => CryptoCurrency().fromJson(json));
+      return parsed.map<CryptoCurrency>((json) => CryptoCurrency().fromJson(json)).toList();
     } else {
       throw Exception("Error while making http request to get cryptocurrencies. StatusCode: ${response.statusCode} Message: ${response.reasonPhrase}");
     }

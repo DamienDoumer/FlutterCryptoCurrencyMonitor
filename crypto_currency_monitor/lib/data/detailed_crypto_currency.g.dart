@@ -68,7 +68,7 @@ Map<String, dynamic> _$DetailedCryptoCurrencyToJson(
       'links': instance.links,
       'image': instance.image,
       'country_origin': instance.countryOrigin,
-      'genesis_date': instance.genesisDate.toIso8601String(),
+      'genesis_date': instance.genesisDate == null ? '' : instance.genesisDate!.toIso8601String(),
       'sentiment_votes_up_percentage': instance.sentimentVotesUpPercentage,
       'sentiment_votes_down_percentage': instance.sentimentVotesDownPercentage,
       'watchlist_portfolio_users': instance.watchlistPortfolioUsers,
@@ -82,5 +82,5 @@ Map<String, dynamic> _$DetailedCryptoCurrencyToJson(
       'market_data': instance.marketData,
       'public_interest_stats': instance.publicInterestStats,
       'status_updates': instance.statusUpdates,
-      'last_updated': instance.lastUpdated.toIso8601String(),
+      'last_updated': instance.lastUpdated == null ? '' : instance.lastUpdated!.toIso8601String(),
     };

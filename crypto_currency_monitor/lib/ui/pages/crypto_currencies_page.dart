@@ -10,6 +10,9 @@ class CryptoCurrenciesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of<CryptoCurrenciesBloc>(context);
+    var localization = Localizations.localeOf(context);
+    bloc.locale = localization.toString();
+    bloc.language = localization.languageCode;
 
     return Scaffold(
       body: FutureBuilder(
@@ -27,9 +30,9 @@ class CryptoCurrenciesPage extends StatelessWidget {
   }
 
   Widget _buildUI() {
-    return Expanded(
-      child: 
-    )
+    return Center(
+      child: Text("Finished Loading :-)")
+    );
   }
 
   Widget _buildLoadingUI() {
