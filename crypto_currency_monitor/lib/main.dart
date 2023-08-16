@@ -1,5 +1,6 @@
 import 'package:crypto_currency_monitor/bloc/crypto_currencies_bloc.dart';
 import 'package:crypto_currency_monitor/bloc/shared/bloc_provider.dart';
+import 'package:crypto_currency_monitor/ui/app_colors.dart';
 import 'package:crypto_currency_monitor/ui/pages/crypto_currencies_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -21,8 +22,9 @@ class CryptoCurrencyApp extends StatelessWidget {
         title: 'Crypto App',
         home: const CryptoCurrenciesPage(),
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
+          primaryColor: AppColors.primaryColor,
+          colorScheme: ColorScheme.fromSeed(seedColor: AppColors.accentColor),
+          useMaterial3: true
         ),
       localizationsDelegates: const [
         AppLocalizations.delegate,

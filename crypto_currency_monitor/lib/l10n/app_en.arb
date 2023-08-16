@@ -17,5 +17,6 @@
   "@marketCap": {
     "description": "The crypto currency's Market Cap"
   },
-  "loading": "Loading..."
+  "loading": "Loading...",
+  "marketTitle": "Cryptocurrency Prices by Market Cap"
 }
