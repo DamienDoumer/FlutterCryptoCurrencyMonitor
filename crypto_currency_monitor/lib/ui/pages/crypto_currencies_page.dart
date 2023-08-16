@@ -27,9 +27,9 @@ class CryptoCurrenciesPage extends StatelessWidget {
   }
 
   Widget _buildUI() {
-    return Center(
-      child: Text("Finished Loading :-)")
-    );
+    return Expanded(
+      child: 
+    )
   }
 
   Widget _buildLoadingUI() {
