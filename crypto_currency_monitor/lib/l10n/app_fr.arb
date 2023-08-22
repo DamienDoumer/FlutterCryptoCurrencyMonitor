@@ -1,7 +1,7 @@
 {
   "coin": "Devise",
   "price": "Prix {currency}",
-  "marketCap": "capitalisation boursière",
+  "marketCap": "Capitalisation boursière",
   "loading": "Chargement...",
   "marketTitle": "Prix ​​​​de la crypto-monnaie par capitalisation boursière"
 }

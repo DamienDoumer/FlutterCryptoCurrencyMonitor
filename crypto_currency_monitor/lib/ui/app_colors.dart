@@ -7,4 +7,10 @@ class AppColors {
   static Color get accentColor {
     return Color(0xffFFD700);
   } 
+  static Color get backgroundColor {
+    return Colors.white;
+  }
+  static Color get textColor {
+    return Colors.black;
+  }
 }

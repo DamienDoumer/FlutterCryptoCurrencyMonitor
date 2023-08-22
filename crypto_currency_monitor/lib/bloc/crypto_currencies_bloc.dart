@@ -41,7 +41,7 @@ class CryptoCurrenciesBloc implements BaseBloc {
         await _loadCurrencies(currency)
     });
 
-    return _loadCurrencies(fiatCurrencies[0]);
+    return Future.value(null); //_loadCurrencies(fiatCurrencies[0]);
     // await Future.delayed(const Duration(seconds: 5));
   }
 
