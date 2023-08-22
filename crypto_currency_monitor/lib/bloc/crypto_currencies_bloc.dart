@@ -59,6 +59,7 @@ class CryptoCurrenciesBloc implements BaseBloc {
   
   @override
   void dispose() {
+    _dropDownSelectedOptionController.close();
     _fiatCurrencyController.close();
     _currenciesController.close();
   }
