@@ -27,21 +27,24 @@ class CryptoCurrenciesBloc implements BaseBloc {
   List<String> fiatCurrencies = [ "USD", "EUR" ];
   final _fiatCurrencyController = StreamController<String?>();
   final _currenciesController = StreamController<List<CryptoCurrency>?>();
+  final _dropDownSelectedOptionController = StreamController<String?>();
 
   Sink<String?> get fiatCurrencySelection => _fiatCurrencyController.sink;
   Stream<List<CryptoCurrency>?> get cryptoCurrenciesStream => _currenciesController.stream;
+  Stream<String?> get dropDownSelectedOptionStream => _dropDownSelectedOptionController.stream;
 
   CryptoCurrenciesBloc({required BaseCoinGekoAPIClient this.apiClient});
 
   @override
   Future initialize() {
-
-    _fiatCurrencyController.stream.listen((currency) async => {
-      if (currency != null)
-        await _loadCurrencies(currency)
+    _fiatCurrencyController.stream.listen((currency) async {
+      if (currency != null) {
+        _dropDownSelectedOptionController.sink.add(currency);
+        await _loadCurrencies(currency);
+      }
     });
 
-    return Future.value(null); //_loadCurrencies(fiatCurrencies[0]);
+    return _loadCurrencies(fiatCurrencies[0]); //Future.value(null);
     // await Future.delayed(const Duration(seconds: 5));
   }
 

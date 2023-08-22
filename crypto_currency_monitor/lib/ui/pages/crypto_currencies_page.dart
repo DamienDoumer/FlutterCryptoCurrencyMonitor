@@ -55,14 +55,20 @@ class CryptoCurrenciesPage extends StatelessWidget {
         Container(
           width: 70,
           margin: const EdgeInsets.fromLTRB(5, 0, 10, 0),
-            child: DropdownButton<String>(
-              value: bloc.fiatCurrencies.first,
-              items: bloc.fiatCurrencies
-                  .map(
-                      (cur) => DropdownMenuItem(value: cur, child: Text(cur)))
-                  .toList(),
-              onChanged: (fiatCur) =>
-                  _fiatCurrencyDropDownSelected(fiatCur, bloc)))
+            child: StreamBuilder(
+              stream: bloc.dropDownSelectedOptionStream,
+              builder: (context, snapshot) {
+                return DropdownButton<String>(
+                  value: snapshot.hasData ? snapshot.data : bloc.fiatCurrencies.first,
+                  items: bloc.fiatCurrencies
+                      .map(
+                          (cur) => DropdownMenuItem(value: cur, child: Text(cur)))
+                      .toList(),
+                  onChanged: (fiatCur) =>
+                      _fiatCurrencyDropDownSelected(fiatCur, bloc));
+              },
+            )
+        )
       ],
     );
   }
