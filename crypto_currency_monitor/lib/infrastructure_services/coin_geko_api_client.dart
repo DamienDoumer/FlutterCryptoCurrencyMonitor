@@ -7,6 +7,9 @@ import 'dart:convert';
 
 class CoinGekoAPIClient implements BaseCoinGekoAPIClient {
 
+  //NOTE: HTTP requests done frequently are better done with one httpclient that keeps the connection alive in Dart
+  //Check this reply I got on reddit for more info. https://www.reddit.com/r/flutterhelp/comments/15sv470/which_method_of_making_http_requests_in_flutter/ 
+  
   @override
   Future<List<CryptoCurrency>> getCryptoCurrencies(String? fiatCurrency, String languageCode) async {
     var url = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=$fiatCurrency&order=market_cap_desc&per_page=100&page=1&sparkline=false&locale=$languageCode";
