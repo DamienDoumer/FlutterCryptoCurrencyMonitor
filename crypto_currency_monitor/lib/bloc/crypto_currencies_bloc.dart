@@ -1,5 +1,3 @@
-
-
 import 'dart:async';
 
 import 'package:crypto_currency_monitor/bloc/shared/base_bloc.dart';
@@ -44,8 +42,17 @@ class CryptoCurrenciesBloc implements BaseBloc {
       }
     });
 
-    return Future.value(null); //_loadCurrencies(fiatCurrencies[0]);
+    return _loadCurrencies(fiatCurrencies[0]); 
+    //Future.value(null); //
     // await Future.delayed(const Duration(seconds: 5));
+  }
+
+  Future cryptoCurrencySelected(CryptoCurrency cryptoCurrency) {
+    return Future(() => null);
+  }
+
+  Future cryptoCurrencyFavoriteTapped(CryptoCurrency cryptoCurrency) {
+    return Future(() => null);
   }
 
   Future _loadCurrencies(String fiatCurrency) async {

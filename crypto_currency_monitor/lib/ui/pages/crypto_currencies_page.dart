@@ -38,6 +38,8 @@ class CryptoCurrenciesPage extends StatelessWidget {
         padding: EdgeInsets.fromLTRB(0, topPadding, 0, bottomPadding),
         color: AppColors.backgroundColor,
         child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [_createTitleView(context, bloc), _createBody(bloc)]));
   }
 
@@ -75,104 +77,89 @@ class CryptoCurrenciesPage extends StatelessWidget {
   Widget _createBody(CryptoCurrenciesBloc bloc) {
     return Expanded(
         child: Container(
-            padding: EdgeInsets.all(5),
+            color: Colors.blue,
+            padding: EdgeInsets.all(3),
             child: StreamBuilder(
               stream: bloc.cryptoCurrenciesStream,
               builder: (context, snapshot) {
-                return ListView(
-                  children: _cryptoListChildren([]),
-                );
+                if (snapshot.hasData) {
+                  return _buildCryptoListView(snapshot.data, bloc);
+                } else
+                  return Text("Loading...");
               },
             )));
   }
 
-  //TODO: Use a listview builder to build your list views.
-  // Widget _buildCryptoListView(List<CryptoCurrency> cryptos, CryptoCurrenciesBloc bloc) {
-  //   return ListView.builder(
-  //     itemCount: cryptos.length,
-  //     itemBuilder: (context, index) {
-
-  //     },
-  //   )
-  // }
-
-  List<Widget> _cryptoListChildren(List<CryptoCurrency>? cryptos) {
-    var listItems = <Widget>[];
-
-    if (cryptos == null) return [];
-
-    listItems.add(Container(
-      padding: const EdgeInsets.only(left: 43),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-              margin: const EdgeInsets.only(left: 5, right: 5),
-              child: Text("#", style: _cryptoListHeaderTextStyle())),
-          Expanded(
-            child: Text("Bla bla bla",
-                textAlign: TextAlign.center,
-                style: _cryptoListHeaderTextStyle().copyWith(fontSize: 15)),
+  Widget _buildCryptoListView(
+      List<CryptoCurrency>? cryptos, CryptoCurrenciesBloc bloc) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Container(
+          padding: const EdgeInsets.only(left: 43),
+          color: Colors.red,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                  margin: const EdgeInsets.only(left: 5, right: 5),
+                  child: Text("#", style: _cryptoListHeaderTextStyle())),
+              Expanded(
+                child: Text("Bla bla bla",
+                    textAlign: TextAlign.center,
+                    style: _cryptoListHeaderTextStyle().copyWith(fontSize: 15)),
+              ),
+              Expanded(
+                child: Text("Bla bla bla",
+                    textAlign: TextAlign.center,
+                    style: _cryptoListHeaderTextStyle().copyWith(fontSize: 15)),
+              ),
+              Expanded(
+                child: Text("Bla bla bla",
+                    textAlign: TextAlign.center,
+                    style: _cryptoListHeaderTextStyle().copyWith(fontSize: 15)),
+              )
+            ],
           ),
-          Expanded(
-            child: Text("Bla bla bla",
-                textAlign: TextAlign.center,
-                style: _cryptoListHeaderTextStyle().copyWith(fontSize: 15)),
-          ),
-          Expanded(
-            child: Text("Bla bla bla",
-                textAlign: TextAlign.center,
-                style: _cryptoListHeaderTextStyle().copyWith(fontSize: 15)),
-          )
-        ],
-      ),
-    ));
-
-    listItems.add(Material(
-      color: AppColors.accentColor,
-      child: InkWell(
-        onTap: () {
-
-        },
-        child: Container(
-          height: 70,
-          // color: Colors.brown,
-          child: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-            Container(
-                alignment: Alignment.center,
-                width: 40,
-                height: 80,
-                child: IconButton(
-                    onPressed: () {
-                      //TODO: Add a press event from the bloc here.
-                    },
-                    icon: const Icon(Icons.favorite_border,
-                        size: 20, color: Colors.red))),
-
-            SizedBox(
-              width: 30,
-              child: Text("10",
-                textAlign: TextAlign.center,
-                style: _cryptoListHeaderTextStyle()),
-            )
-          ]),
         ),
-      ),
-    ));
+        Expanded(
+            child: Container(
+          color: Colors.black,
+          child: ListView.builder(
+            padding: EdgeInsets.all(0),
+            itemCount: cryptos!.length,
+            itemBuilder: (context, index) {
+              final crypto = cryptos[index];
+              final rank = index + 1;
 
-    // for (int i = 0; i < cryptos.length; i++) {
-    //   listItems.add(Container(
-    //     height: 50,
-    //     child: Row(children: [
-    //       SizedBox(
-    //           width: 20,
-    //           child: IconButton(
-    //               onPressed: () {}, icon: const Icon(Icons.heat_pump_sharp)))
-    //     ]),
-    //   ));
-    // }
-
-    return listItems;
+              return InkWell(
+                child: Container(
+                color: Colors.brown,
+                child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        alignment: Alignment.center,
+                        child: IconButton(
+                            onPressed: () => bloc.cryptoCurrencyFavoriteTapped(crypto),
+                            icon: const Icon(Icons.favorite_border,
+                                size: 20, color: Colors.red))),
+                      SizedBox(
+                        width: 30,
+                        child: Text(rank.toString(),
+                            textAlign: TextAlign.start,
+                            style: _cryptoListHeaderTextStyle()),
+                      )
+                    ]),
+                ),
+                onTap: () => bloc.cryptoCurrencySelected(crypto),
+              );
+            },
+          ),
+        ))
+      ],
+    );
   }
 
   TextStyle _cryptoListHeaderTextStyle() {
