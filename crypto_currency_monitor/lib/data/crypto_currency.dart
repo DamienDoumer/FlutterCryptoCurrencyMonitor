@@ -31,6 +31,7 @@ class CryptoCurrency {
   num? atlChangePercentage;
   String? atlDate;
   String? lastUpdated;
+  bool? isFavorite;
 
   CryptoCurrency(
       {this.id,
@@ -57,7 +58,8 @@ class CryptoCurrency {
       this.atl,
       this.atlChangePercentage,
       this.atlDate,
-      this.lastUpdated});
+      this.lastUpdated,
+      this.isFavorite});
 
   String toJson() {
     Map<String, dynamic> curMap = _$CryptoCurrencyToJson(this);

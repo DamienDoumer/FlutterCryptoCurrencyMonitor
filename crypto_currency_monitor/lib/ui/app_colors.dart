@@ -10,7 +10,11 @@ class AppColors {
   static Color get backgroundColor {
     return Colors.white;
   }
+
   static Color get textColor {
     return Colors.black;
-  }
+  }  
+  static Color get secondaryTextColor {
+    return Colors.grey;
+  } 
 }
