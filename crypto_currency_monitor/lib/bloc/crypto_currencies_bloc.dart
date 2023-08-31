@@ -36,8 +36,6 @@ class CryptoCurrenciesBloc implements BaseBloc {
   Stream<(int, bool)> get favoriteStream => _favoriteController.stream;
 
 
-  ValueNotifier<bool> counter = ValueNotifier(false);
-
   CryptoCurrenciesBloc({required BaseCoinGekoAPIClient this.apiClient});
 
   @override
@@ -62,7 +60,6 @@ class CryptoCurrenciesBloc implements BaseBloc {
     _cryptoCurrencies[index].isFavorite = !_cryptoCurrencies[index].isFavorite ;
     cryptoCurrency.isFavorite = _cryptoCurrencies[index].isFavorite;
     _favoriteController.add((index, cryptoCurrency.isFavorite));
-    counter.value = !counter.value;
 
     return Future(() => null);
   }
