@@ -23,7 +23,8 @@ class CryptoListItemComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       child: InkWell(
-        child: SizedBox(
+        child: Container(
+          decoration: const BoxDecoration(border: Border(bottom: BorderSide(color: Color(0xffD3D3D3)))),
           height: 50,
           child: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
             Container(
