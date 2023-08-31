@@ -7,6 +7,9 @@ class AppColors {
   static Color get accentColor {
     return Color(0xffFFD700);
   } 
+  static Color get shadowColor {
+    return Color(0xffD3D3D3);
+  } 
   static Color get likeButtonColor {
     return Colors.red;
   } 
