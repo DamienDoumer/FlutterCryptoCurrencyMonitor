@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:crypto_currency_monitor/bloc/shared/base_bloc.dart';
 import 'package:crypto_currency_monitor/data/crypto_currency.dart';
-import 'package:rxdart/rxdart.dart';
+import 'package:flutter/material.dart';
 
 import '../infrastructure_services/shared/base_coin_geko_api_client.dart';
 
@@ -10,6 +10,7 @@ class CryptoCurrenciesBloc implements BaseBloc {
   
   late String _locale;
   late String _language;
+  List<CryptoCurrency> _cryptoCurrencies = [];
 
   String get locale => _locale;
   String get language => _language;
@@ -25,11 +26,17 @@ class CryptoCurrenciesBloc implements BaseBloc {
   List<String> fiatCurrencies = [ "USD", "EUR" ];
   final _fiatCurrencyController = StreamController<String?>();
   final _currenciesController = StreamController<List<CryptoCurrency>?>();
-  final _dropDownSelectedOptionController = StreamController<String?>();
+  final _fiatCurrencySelectedOptionController = StreamController<String?>.broadcast();
+  final _favoriteController = StreamController<(int, bool)>.broadcast();
+
 
   Sink<String?> get fiatCurrencySelection => _fiatCurrencyController.sink;
   Stream<List<CryptoCurrency>?> get cryptoCurrenciesStream => _currenciesController.stream;
-  Stream<String?> get dropDownSelectedOptionStream => _dropDownSelectedOptionController.stream;
+  Stream<String?> get fiatCurrencySelectedOptionStream => _fiatCurrencySelectedOptionController.stream;
+  Stream<(int, bool)> get favoriteStream => _favoriteController.stream;
+
+
+  ValueNotifier<bool> counter = ValueNotifier(false);
 
   CryptoCurrenciesBloc({required BaseCoinGekoAPIClient this.apiClient});
 
@@ -37,7 +44,7 @@ class CryptoCurrenciesBloc implements BaseBloc {
   Future initialize() {
     _fiatCurrencyController.stream.listen((currency) async {
       if (currency != null) {
-        _dropDownSelectedOptionController.sink.add(currency);
+        _fiatCurrencySelectedOptionController.sink.add(currency);
         await _loadCurrencies(currency);
       }
     });
@@ -47,18 +54,23 @@ class CryptoCurrenciesBloc implements BaseBloc {
     // await Future.delayed(const Duration(seconds: 5));
   }
 
-  Future cryptoCurrencySelected(CryptoCurrency cryptoCurrency) {
+  Future cryptoCurrencySelected(CryptoCurrency cryptoCurrency, int index) {
     return Future(() => null);
   }
 
-  Future cryptoCurrencyFavoriteTapped(CryptoCurrency cryptoCurrency) {
+  Future cryptoCurrencyFavoriteTapped(CryptoCurrency cryptoCurrency, int index) {
+    _cryptoCurrencies[index].isFavorite = !_cryptoCurrencies[index].isFavorite ;
+    cryptoCurrency.isFavorite = _cryptoCurrencies[index].isFavorite;
+    _favoriteController.add((index, cryptoCurrency.isFavorite));
+    counter.value = !counter.value;
+
     return Future(() => null);
   }
 
   Future _loadCurrencies(String fiatCurrency) async {
     try {
-      var currencies = await apiClient.getCryptoCurrencies(fiatCurrency, language);
-      _currenciesController.add(currencies);
+      _cryptoCurrencies = await apiClient.getCryptoCurrencies(fiatCurrency, language);
+      _currenciesController.add(_cryptoCurrencies);
     } catch (e) {
       _currenciesController.addError(e.toString());
     }
@@ -66,7 +78,8 @@ class CryptoCurrenciesBloc implements BaseBloc {
   
   @override
   void dispose() {
-    _dropDownSelectedOptionController.close();
+    _favoriteController.close();
+    _fiatCurrencySelectedOptionController.close();
     _fiatCurrencyController.close();
     _currenciesController.close();
   }

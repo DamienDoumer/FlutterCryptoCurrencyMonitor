@@ -3,7 +3,7 @@
   "@coin": {
     "description": "The crypto currency"
   },
-  "price": "Price {currency}",
+  "price": "Price ({currency})",
   "@price": {
     "description": "The crypto currency's price",
     "placeholders": {

@@ -1,11 +1,15 @@
 import 'package:crypto_currency_monitor/ui/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../bloc/crypto_currencies_bloc.dart';
 import '../../bloc/shared/bloc_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../data/crypto_currency.dart';
+import '../app_styles.dart';
+import '../components/crypto_list_item_component.dart';
+import '../views/rounded_network_image.dart';
 
 class CryptoCurrenciesPage extends StatelessWidget {
   const CryptoCurrenciesPage({super.key});
@@ -24,7 +28,7 @@ class CryptoCurrenciesPage extends StatelessWidget {
         if (snapShot.connectionState == ConnectionState.done) {
           return _buildUI(context, bloc);
         } else {
-          return _buildLoadingUI();
+          return AppStyles.buildLoadingUI();
         }
       },
     ));
@@ -40,7 +44,7 @@ class CryptoCurrenciesPage extends StatelessWidget {
         child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [_createTitleView(context, bloc), _createBody(bloc)]));
+            children: [_createTitleView(context, bloc), _createBody(context, bloc)]));
   }
 
   Widget _createTitleView(BuildContext context, CryptoCurrenciesBloc bloc) {
@@ -51,12 +55,12 @@ class CryptoCurrenciesPage extends StatelessWidget {
             child: Container(
                 margin: const EdgeInsets.only(left: 10),
                 child: Text(AppLocalizations.of(context).marketCap,
-                    style: _h1TextStyle()))),
+                    style: AppStyles.h1TextStyle()))),
         Container(
             width: 70,
             margin: const EdgeInsets.fromLTRB(5, 0, 10, 0),
             child: StreamBuilder(
-              stream: bloc.dropDownSelectedOptionStream,
+              stream: bloc.fiatCurrencySelectedOptionStream,
               builder: (context, snapshot) {
                 return DropdownButton<String>(
                     value: snapshot.hasData
@@ -74,23 +78,24 @@ class CryptoCurrenciesPage extends StatelessWidget {
     );
   }
 
-  Widget _createBody(CryptoCurrenciesBloc bloc) {
+  Widget _createBody(BuildContext context, CryptoCurrenciesBloc bloc) {
     return Expanded(
         child: Container(
-            color: Colors.blue,
-            padding: EdgeInsets.all(3),
+            padding: const EdgeInsets.all(3),
             child: StreamBuilder(
               stream: bloc.cryptoCurrenciesStream,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  return _buildCryptoListView(snapshot.data, bloc);
-                } else
-                  return Text("Loading...");
+                  return _buildCryptoListView(context, snapshot.data, bloc);
+                } else {
+                  return Text(AppLocalizations.of(context).loading, 
+                    style: AppStyles.h1TextStyle(),);
+                }
               },
-            )));
+    )));
   }
 
-  Widget _buildCryptoListView(
+  Widget _buildCryptoListView(BuildContext context, 
       List<CryptoCurrency>? cryptos, CryptoCurrenciesBloc bloc) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -98,84 +103,55 @@ class CryptoCurrenciesPage extends StatelessWidget {
       children: [
         Container(
           padding: const EdgeInsets.only(left: 43),
-          color: Colors.red,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
                   margin: const EdgeInsets.only(left: 5, right: 5),
-                  child: Text("#", style: _cryptoListHeaderTextStyle())),
+                  child: Text("#", style: AppStyles.cryptoListHeaderTextStyle())),
               Expanded(
-                child: Text("Bla bla bla",
+                child: Text(AppLocalizations.of(context).coin,
                     textAlign: TextAlign.center,
-                    style: _cryptoListHeaderTextStyle().copyWith(fontSize: 15)),
+                    style: AppStyles.normalTextStyle()),
               ),
               Expanded(
-                child: Text("Bla bla bla",
-                    textAlign: TextAlign.center,
-                    style: _cryptoListHeaderTextStyle().copyWith(fontSize: 15)),
+                child: StreamBuilder(
+                  stream: bloc.fiatCurrencySelectedOptionStream,
+                  builder: (context, snapshot) {
+                    String? currency = snapshot.hasData ? snapshot.data : bloc.fiatCurrencies[0];
+                    
+                    return Text(AppLocalizations.of(context).price(currency!),
+                      textAlign: TextAlign.center,
+                      style: AppStyles.normalTextStyle());
+                },),
               ),
               Expanded(
-                child: Text("Bla bla bla",
+                child: Text(AppLocalizations.of(context).marketCap,
                     textAlign: TextAlign.center,
-                    style: _cryptoListHeaderTextStyle().copyWith(fontSize: 15)),
+                    style: AppStyles.normalTextStyle()),
               )
             ],
           ),
         ),
         Expanded(
-            child: Container(
-          color: Colors.black,
-          child: ListView.builder(
-            padding: EdgeInsets.all(0),
-            itemCount: cryptos!.length,
-            itemBuilder: (context, index) {
-              final crypto = cryptos[index];
-              final rank = index + 1;
+            child: ListView.builder(
+              padding: const EdgeInsets.all(0),
+              itemCount: cryptos!.length,
+              itemBuilder: (context, index) {
+                final crypto = cryptos[index];
+                final rank = index + 1;
 
-              return InkWell(
-                child: Container(
-                color: Colors.brown,
-                child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        alignment: Alignment.center,
-                        child: IconButton(
-                            onPressed: () => bloc.cryptoCurrencyFavoriteTapped(crypto),
-                            icon: const Icon(Icons.favorite_border,
-                                size: 20, color: Colors.red))),
-                      SizedBox(
-                        width: 30,
-                        child: Text(rank.toString(),
-                            textAlign: TextAlign.start,
-                            style: _cryptoListHeaderTextStyle()),
-                      )
-                    ]),
-                ),
-                onTap: () => bloc.cryptoCurrencySelected(crypto),
-              );
-            },
-          ),
-        ))
+                return CryptoListItemComponent(cryptoCurrency: crypto, bloc: bloc, 
+                  context: context, rank: rank);
+              },
+            ))
       ],
     );
   }
-
-  TextStyle _cryptoListHeaderTextStyle() {
-    return TextStyle(color: AppColors.secondaryTextColor, fontSize: 20);
-  }
-
-  Widget _buildLoadingUI() {
-    return const Center(child: Text("Loading..."));
-  }
-
-  TextStyle _h1TextStyle() {
-    return TextStyle(color: AppColors.textColor, fontSize: 20);
-  }
-
+  
   void _fiatCurrencyDropDownSelected(
       String? fiatCurrency, CryptoCurrenciesBloc bloc) {
     bloc.fiatCurrencySelection.add(fiatCurrency);
   }
+
 }
