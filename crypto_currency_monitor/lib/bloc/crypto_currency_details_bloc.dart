@@ -9,24 +9,16 @@ import '../infrastructure_services/shared/base_coin_geko_api_client.dart';
 
 class CryptoCurrencyDetailsBloc implements BaseBloc {
   
-  late String _locale;
-  late String _language;
   bool _isFavorite = false;
+  @override
+  late String language;  
+  @override
+  late String locale;
 
   late String fiatCurrency;
   late CryptoCurrency cryptoCurrency;
   late final BaseCoinGekoAPIClient apiClient;
   late DetailedCryptoCurrency detailedCryptoCurrency;
-
-  String get locale => _locale;
-  String get language => _language;
-
-  set locale(String locale) {
-    _locale = locale;
-  }
-  set language(String language) {
-    _language = language;
-  }
 
   final _favoriteController = StreamController<bool>();
   final _currencyDetailsController = StreamController<DetailedCryptoCurrency>();
@@ -50,6 +42,10 @@ class CryptoCurrencyDetailsBloc implements BaseBloc {
     } catch (e) {
       _currencyDetailsController.addError(e);
     }
+  }
+
+  void backButtonPressed() {
+    
   }
 
   Future favoriteTapped() async {

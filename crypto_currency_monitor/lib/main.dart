@@ -24,7 +24,7 @@ class CryptoCurrencyApp extends StatelessWidget {
       bloc: CryptoCurrenciesBloc(apiClient: CoinGekoAPIClient()),
       child: MaterialApp(
         title: 'Crypto App',
-        home: const CryptoCurrenciesPage(),
+        home: CryptoCurrenciesPage(),
         theme: ThemeData(
           primaryColor: AppColors.primaryColor,
           colorScheme: ColorScheme.fromSeed(seedColor: AppColors.accentColor),

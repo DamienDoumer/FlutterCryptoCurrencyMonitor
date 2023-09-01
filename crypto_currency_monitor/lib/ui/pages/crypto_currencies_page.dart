@@ -1,4 +1,5 @@
 import 'package:crypto_currency_monitor/ui/app_colors.dart';
+import 'package:crypto_currency_monitor/ui/pages/shared/base_page.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -11,15 +12,12 @@ import '../app_styles.dart';
 import '../components/crypto_list_item_component.dart';
 import '../views/rounded_network_image.dart';
 
-class CryptoCurrenciesPage extends StatelessWidget {
-  const CryptoCurrenciesPage({super.key});
+class CryptoCurrenciesPage extends BasePage<CryptoCurrenciesBloc> {
+  CryptoCurrenciesPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final bloc = BlocProvider.of<CryptoCurrenciesBloc>(context);
-    var localization = Localizations.localeOf(context);
-    bloc.locale = localization.toString();
-    bloc.language = localization.languageCode;
+    super.build(context);
 
     return Scaffold(
         body: FutureBuilder(
@@ -35,11 +33,8 @@ class CryptoCurrenciesPage extends StatelessWidget {
   }
 
   Widget _buildUI(BuildContext context, CryptoCurrenciesBloc bloc) {
-    final topPadding = MediaQuery.of(context).padding.top;
-    final bottomPadding = MediaQuery.of(context).padding.bottom;
-
     return Container(
-        padding: EdgeInsets.fromLTRB(0, topPadding, 0, bottomPadding),
+        padding: safeInsets,
         color: AppColors.backgroundColor,
         child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
