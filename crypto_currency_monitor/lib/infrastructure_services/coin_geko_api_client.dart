@@ -35,8 +35,8 @@ class CoinGekoAPIClient implements BaseCoinGekoAPIClient {
     var response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
-      final parsed = json.decode(response.body).cast<Map<String, dynamic>>();
-      return DetailedCryptoCurrency().fromJson(parsed);
+      var decodedJson = json.decode(response.body);
+      return DetailedCryptoCurrency().fromJson(decodedJson);
     } else {
       throw Exception("Error while making http request to get cryptocurrency details. StatusCode: ${response.statusCode} Message: ${response.reasonPhrase}");
     }

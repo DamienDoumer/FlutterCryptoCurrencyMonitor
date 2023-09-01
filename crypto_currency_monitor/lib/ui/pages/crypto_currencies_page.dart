@@ -1,4 +1,6 @@
+import 'package:crypto_currency_monitor/bloc/crypto_currency_details_bloc.dart';
 import 'package:crypto_currency_monitor/ui/app_colors.dart';
+import 'package:crypto_currency_monitor/ui/pages/crypto_currency_details_page.dart';
 import 'package:crypto_currency_monitor/ui/pages/shared/base_page.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -137,16 +139,28 @@ class CryptoCurrenciesPage extends BasePage<CryptoCurrenciesBloc> {
                 final rank = index + 1;
 
                 return CryptoListItemComponent(cryptoCurrency: crypto, bloc: bloc, 
-                  context: context, rank: rank);
+                  context: context, rank: rank, onCryptoSelected: (crypto, index) => _cryptoSelected(crypto, index, context));
               },
             ))
       ],
     );
   }
   
-  void _fiatCurrencyDropDownSelected(
-      String? fiatCurrency, CryptoCurrenciesBloc bloc) {
-    bloc.fiatCurrencySelection.add(fiatCurrency);
+  Future _cryptoSelected(CryptoCurrency cryptoCurrency, int index, BuildContext context) async {
+    bloc.cryptoCurrencySelected(cryptoCurrency, index);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => BlocProvider(
+          bloc: CryptoCurrencyDetailsBloc(cryptoCurrency: cryptoCurrency, apiClient: bloc.apiClient, fiatCurrency: bloc.selectedFiatCurrency),
+          child: CryptoCurrencyDetailsPage(),
+        ),
+      ),
+    );
+
   }
 
+  void _fiatCurrencyDropDownSelected(String? fiatCurrency, CryptoCurrenciesBloc bloc) {
+    bloc.fiatCurrencySelection.add(fiatCurrency);
+  }
 }

@@ -9,13 +9,13 @@ part of 'detailed_crypto_currency.dart';
 DetailedCryptoCurrency _$DetailedCryptoCurrencyFromJson(
         Map<String, dynamic> json) =>
     DetailedCryptoCurrency(
-      id: json['id'] as String,
-      symbol: json['symbol'] as String,
-      name: json['name'] as String,
+      id: json['id'] as String?,
+      symbol: json['symbol'] as String?,
+      name: json['name'] as String?,
       assetPlatformId: json['asset_platform_id'],
-      platforms: Platforms.fromJson(json['platforms'] as Map<String, dynamic>),
-      detailPlatforms: DetailPlatforms.fromJson(
-          json['detail_platforms'] as Map<String, dynamic>),
+      platforms: Platforms.fromJson(json['platforms'] as Map<String?, dynamic>),
+      // detailPlatforms: DetailPlatforms.fromJson(
+      //     json['detail_platforms'] as Map<String, dynamic>),
       blockTimeInMinutes: json['block_time_in_minutes'] as int,
       hashingAlgorithm: json['hashing_algorithm'] as String,
       categories: (json['categories'] as List<dynamic>)
@@ -41,8 +41,8 @@ DetailedCryptoCurrency _$DetailedCryptoCurrencyFromJson(
       communityScore: (json['community_score'] as num).toDouble(),
       liquidityScore: (json['liquidity_score'] as num).toDouble(),
       publicInterestScore: (json['public_interest_score'] as num).toDouble(),
-      marketData:
-          MarketData.fromJson(json['market_data'] as Map<String, dynamic>),
+      // marketData:
+      //     MarketData.fromJson(json['market_data'] as Map<String, dynamic>),
       publicInterestStats: PublicInterestStats.fromJson(
           json['public_interest_stats'] as Map<String, dynamic>),
       statusUpdates: json['status_updates'] as List<dynamic>,

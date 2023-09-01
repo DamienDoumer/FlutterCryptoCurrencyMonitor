@@ -15,12 +15,12 @@ class DetailPlatforms {
     });
 
   String toJson() {
-    Map<String, dynamic> curMap = _$DetailPlatformsToJson(this);
+    Map<String?, dynamic> curMap = _$DetailPlatformsToJson(this);
     var json = jsonEncode(curMap);
     return json;
   }
 
-  static DetailPlatforms fromJson(Map<String, dynamic> map){
+  static DetailPlatforms fromJson(Map<String?, dynamic> map){
     return _$DetailPlatformsFromJson(map);
   }
 

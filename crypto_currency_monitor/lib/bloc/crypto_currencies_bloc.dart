@@ -23,6 +23,8 @@ class CryptoCurrenciesBloc implements BaseBloc {
   }
 
   late final BaseCoinGekoAPIClient apiClient;
+  late String selectedFiatCurrency;
+
   List<String> fiatCurrencies = [ "USD", "EUR" ];
   final _fiatCurrencyController = StreamController<String?>();
   final _currenciesController = StreamController<List<CryptoCurrency>?>();
@@ -42,11 +44,13 @@ class CryptoCurrenciesBloc implements BaseBloc {
   Future initialize() {
     _fiatCurrencyController.stream.listen((currency) async {
       if (currency != null) {
+        selectedFiatCurrency = currency;
         _fiatCurrencySelectedOptionController.sink.add(currency);
         await _loadCurrencies(currency);
       }
     });
 
+    selectedFiatCurrency = fiatCurrencies[0];
     return _loadCurrencies(fiatCurrencies[0]); 
     //Future.value(null); //
     // await Future.delayed(const Duration(seconds: 5));

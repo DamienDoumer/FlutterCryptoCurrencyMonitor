@@ -11,13 +11,16 @@ class CryptoListItemComponent extends StatelessWidget {
   final CryptoCurrenciesBloc bloc;
   final int rank;
   final BuildContext context;
+  final Function(CryptoCurrency cryptoCurrency, int index) onCryptoSelected;
+
   int get index => rank - 1;
 
   const CryptoListItemComponent(
       {super.key, required this.cryptoCurrency,
       required this.bloc,
       required this.rank,
-      required this.context});
+      required this.context,
+      required this.onCryptoSelected});
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +90,7 @@ class CryptoListItemComponent extends StatelessWidget {
                         style: AppStyles.normalTextStyle())))
           ]),
         ),
-        onTap: () => bloc.cryptoCurrencySelected(cryptoCurrency, index),
+        onTap: () => onCryptoSelected(cryptoCurrency, index),
       ),
     );
   }
