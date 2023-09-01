@@ -6,6 +6,7 @@ import 'package:crypto_currency_monitor/data/crypto_currency.dart';
 
 import '../data/detailed_crypto_currency.dart';
 import '../infrastructure_services/shared/base_coin_geko_api_client.dart';
+import 'constants.dart';
 
 class CryptoCurrencyDetailsBloc implements BaseBloc {
   
@@ -14,6 +15,12 @@ class CryptoCurrencyDetailsBloc implements BaseBloc {
   late String language;  
   @override
   late String locale;
+  String cryptoDescription = "";
+  String price = "";
+  String ath = "";
+  String marketCap = "";
+  String currency = "";
+  num? rank = 0;
 
   late String fiatCurrency;
   late CryptoCurrency cryptoCurrency;
@@ -39,6 +46,22 @@ class CryptoCurrencyDetailsBloc implements BaseBloc {
     try {
       _isFavorite = cryptoCurrency.isFavorite;
       detailedCryptoCurrency = await apiClient.getCryptoCurrencyDetails(cryptoCurrency.id!, locale);
+            
+      if (language.toLowerCase() == "fr") {
+        cryptoDescription = detailedCryptoCurrency.description!.fr;
+      } else {
+        cryptoDescription = detailedCryptoCurrency.description!.en;
+      }
+      
+      marketCap = cryptoCurrency.marketCap!.toString();
+      price = cryptoCurrency.currentPrice!.toString();
+      ath = cryptoCurrency.ath!.toString();
+      rank = cryptoCurrency.marketCapRank;
+      
+      // var priceMap = detailedCryptoCurrency.marketData?.currentPrice.entries.firstWhere((element) => element.key.toLowerCase() == 'aud');
+      // var athMap = detailedCryptoCurrency.marketData?.ath.entries.firstWhere((element) => element.key.toLowerCase() == 'aud');
+      // var marketCapMap = detailedCryptoCurrency.marketData?.marketCap.entries.firstWhere((element) => element.key.toLowerCase() == 'aud');
+
     } catch (e) {
       _currencyDetailsController.addError(e);
     }

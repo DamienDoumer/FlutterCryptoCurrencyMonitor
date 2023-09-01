@@ -3,5 +3,6 @@
   "price": "Prix ({currency})",
   "marketCap": "Capitalisation boursière",
   "loading": "Chargement...",
-  "marketTitle": "Prix ​​​​de la crypto-monnaie par capitalisation boursière"
+  "marketTitle": "Prix ​​​​de la crypto-monnaie par capitalisation boursière",
+  "ath": "All Time High ({currency})"
 }

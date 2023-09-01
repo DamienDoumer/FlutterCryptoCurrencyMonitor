@@ -18,5 +18,6 @@
     "description": "The crypto currency's Market Cap"
   },
   "loading": "Loading...",
-  "marketTitle": "Cryptocurrency Prices by Market Cap"
+  "marketTitle": "Cryptocurrency Prices by Market Cap",
+  "ath": "All Time High ({currency})"
 }

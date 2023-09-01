@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:crypto_currency_monitor/bloc/shared/base_bloc.dart';
 import 'package:crypto_currency_monitor/data/crypto_currency.dart';
-import 'package:flutter/material.dart';
 
 import '../infrastructure_services/shared/base_coin_geko_api_client.dart';
+import 'constants.dart';
 
 class CryptoCurrenciesBloc implements BaseBloc {
   
@@ -25,7 +25,7 @@ class CryptoCurrenciesBloc implements BaseBloc {
   late final BaseCoinGekoAPIClient apiClient;
   late String selectedFiatCurrency;
 
-  List<String> fiatCurrencies = [ "USD", "EUR" ];
+  List<String> fiatCurrencies = [ Constants.USDCode, Constants.EURCode ];
   final _fiatCurrencyController = StreamController<String?>();
   final _currenciesController = StreamController<List<CryptoCurrency>?>();
   final _fiatCurrencySelectedOptionController = StreamController<String?>.broadcast();
