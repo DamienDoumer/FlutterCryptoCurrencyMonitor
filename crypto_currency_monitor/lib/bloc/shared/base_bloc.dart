@@ -1,8 +1,8 @@
 
 import 'bloc.dart';
 
-class BaseBloc extends Bloc {
-  
+abstract class BaseBloc implements Bloc {
+  late bool isInitialized = false;
   late String _locale;
   late String _language;
   
@@ -24,5 +24,6 @@ class BaseBloc extends Bloc {
 
   @override
   Future initialize() async {
+    isInitialized = true;
   }
 }

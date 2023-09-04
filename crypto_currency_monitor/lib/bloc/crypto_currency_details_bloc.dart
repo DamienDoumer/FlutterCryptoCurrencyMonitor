@@ -8,7 +8,7 @@ import '../data/detailed_crypto_currency.dart';
 import '../infrastructure_services/shared/base_coin_geko_api_client.dart';
 import 'constants.dart';
 
-class CryptoCurrencyDetailsBloc implements BaseBloc {
+class CryptoCurrencyDetailsBloc extends BaseBloc {
   
   bool _isFavorite = false;
   @override
@@ -43,6 +43,11 @@ class CryptoCurrencyDetailsBloc implements BaseBloc {
 
   @override
   Future initialize() async {
+    if (isInitialized) {
+      return;
+    }
+    await super.initialize();
+
     try {
       _isFavorite = cryptoCurrency.isFavorite;
       detailedCryptoCurrency = await apiClient.getCryptoCurrencyDetails(cryptoCurrency.id!, locale);

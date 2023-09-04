@@ -6,7 +6,7 @@ import 'package:crypto_currency_monitor/data/crypto_currency.dart';
 import '../infrastructure_services/shared/base_coin_geko_api_client.dart';
 import 'constants.dart';
 
-class CryptoCurrenciesBloc implements BaseBloc {
+class CryptoCurrenciesBloc extends BaseBloc {
   
   late String _locale;
   late String _language;
@@ -31,17 +31,19 @@ class CryptoCurrenciesBloc implements BaseBloc {
   final _fiatCurrencySelectedOptionController = StreamController<String?>.broadcast();
   final _favoriteController = StreamController<(int, bool)>.broadcast();
 
-
   Sink<String?> get fiatCurrencySelection => _fiatCurrencyController.sink;
   Stream<List<CryptoCurrency>?> get cryptoCurrenciesStream => _currenciesController.stream;
   Stream<String?> get fiatCurrencySelectedOptionStream => _fiatCurrencySelectedOptionController.stream;
   Stream<(int, bool)> get favoriteStream => _favoriteController.stream;
 
-
   CryptoCurrenciesBloc({required BaseCoinGekoAPIClient this.apiClient});
 
   @override
-  Future initialize() {
+  Future initialize() async {
+    if (isInitialized) {
+      return;
+    }
+    await super.initialize();
     _fiatCurrencyController.stream.listen((currency) async {
       if (currency != null) {
         selectedFiatCurrency = currency;
