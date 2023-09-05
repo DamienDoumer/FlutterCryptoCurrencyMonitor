@@ -18,66 +18,66 @@ class DetailedCryptoCurrency {
     String? symbol;
     String? name;
     dynamic? assetPlatformId;
-    Platforms? platforms;
-    DetailPlatforms? detailPlatforms;
-    int? blockTimeInMinutes;
-    String? hashingAlgorithm;
-    List<String>? categories;
-    dynamic? publicNotice;
-    List<dynamic>? additionalNotices;
+    // Platforms? platforms;
+    // DetailPlatforms? detailPlatforms;
+    // int? blockTimeInMinutes;
+    // String? hashingAlgorithm;
+    // List<String>? categories;
+    // dynamic? publicNotice;
+    // List<dynamic>? additionalNotices;
     Tion? localization;
     Tion? description;
-    Links? links;
+    // Links? links;
     Image? image;
-    String? countryOrigin;
-    DateTime? genesisDate;
-    double? sentimentVotesUpPercentage;
-    double? sentimentVotesDownPercentage;
-    int? watchlistPortfolioUsers;
-    int? marketCapRank;
-    int? coingeckoRank;
-    double? coingeckoScore;
-    double? developerScore;
-    double? communityScore;
-    double? liquidityScore;
-    double? publicInterestScore;
-    MarketData? marketData;
-    PublicInterestStats? publicInterestStats;
-    List<dynamic>? statusUpdates;
-    DateTime? lastUpdated;
+    // String? countryOrigin;
+    // DateTime? genesisDate;
+    // double? sentimentVotesUpPercentage;
+    // double? sentimentVotesDownPercentage;
+    // int? watchlistPortfolioUsers;
+    // int? marketCapRank;
+    // int? coingeckoRank;
+    // double? coingeckoScore;
+    // double? developerScore;
+    // double? communityScore;
+    // double? liquidityScore;
+    // double? publicInterestScore;
+    // MarketData? marketData;
+    // PublicInterestStats? publicInterestStats;
+    // List<dynamic>? statusUpdates;
+    // DateTime? lastUpdated;
 
     DetailedCryptoCurrency({
         this.id,
         this.symbol,
         this.name,
         this.assetPlatformId,
-        this.platforms,
-        this.detailPlatforms,
-        this.blockTimeInMinutes,
-        this.hashingAlgorithm,
-        this.categories,
-        this.publicNotice,
-        this.additionalNotices,
+        // this.platforms,
+        // this.detailPlatforms,
+        // this.blockTimeInMinutes,
+        // this.hashingAlgorithm,
+        // this.categories,
+        // this.publicNotice,
+        // this.additionalNotices,
         this.localization,
         this.description,
-        this.links,
+        // this.links,
         this.image,
-        this.countryOrigin,
-        this.genesisDate,
-        this.sentimentVotesUpPercentage,
-        this.sentimentVotesDownPercentage,
-        this.watchlistPortfolioUsers,
-        this.marketCapRank,
-        this.coingeckoRank,
-        this.coingeckoScore,
-        this.developerScore,
-        this.communityScore,
-        this.liquidityScore,
-        this.publicInterestScore,
-        this.marketData,
-        this.publicInterestStats,
-        this.statusUpdates,
-        this.lastUpdated,
+        // this.countryOrigin,
+        // this.genesisDate,
+        // this.sentimentVotesUpPercentage,
+        // this.sentimentVotesDownPercentage,
+        // this.watchlistPortfolioUsers,
+        // this.marketCapRank,
+        // this.coingeckoRank,
+        // this.coingeckoScore,
+        // this.developerScore,
+        // this.communityScore,
+        // this.liquidityScore,
+        // this.publicInterestScore,
+        // this.marketData,
+        // this.publicInterestStats,
+        // this.statusUpdates,
+        // this.lastUpdated,
     });
     
   String toJson() {

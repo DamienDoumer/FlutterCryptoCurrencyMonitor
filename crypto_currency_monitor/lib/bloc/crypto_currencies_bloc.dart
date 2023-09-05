@@ -70,17 +70,25 @@ class CryptoCurrenciesBloc extends BaseBloc {
     return Future(() => null);
   }
 
+  Future refreshCurrencies() {
+    return _loadCurrencies(selectedFiatCurrency);
+  }
+
   Future _loadCurrencies(String fiatCurrency) async {
     try {
+      busyController.add(true);
       _cryptoCurrencies = await apiClient.getCryptoCurrencies(fiatCurrency, language);
       _currenciesController.add(_cryptoCurrencies);
     } catch (e) {
       _currenciesController.addError(e.toString());
+    } finally {
+      busyController.add(false);
     }
   }
   
   @override
   void dispose() {
+    super.dispose();
     _favoriteController.close();
     _fiatCurrencySelectedOptionController.close();
     _fiatCurrencyController.close();

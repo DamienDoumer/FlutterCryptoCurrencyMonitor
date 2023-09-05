@@ -41,7 +41,10 @@ class CryptoCurrenciesPage extends BasePage<CryptoCurrenciesBloc> {
         child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [_createTitleView(context, bloc), _createBody(context, bloc)]));
+            children: [
+              _createTitleView(context, bloc),
+              _createBody(context, bloc)
+            ]));
   }
 
   Widget _createTitleView(BuildContext context, CryptoCurrenciesBloc bloc) {
@@ -85,82 +88,113 @@ class CryptoCurrenciesPage extends BasePage<CryptoCurrenciesBloc> {
                 if (snapshot.hasData) {
                   return _buildCryptoListView(context, snapshot.data, bloc);
                 } else {
-                  return Text(AppLocalizations.of(context).loading, 
-                    style: AppStyles.h1TextStyle(),);
+                  return Text(
+                    AppLocalizations.of(context).loading,
+                    style: AppStyles.h1TextStyle(),
+                  );
                 }
               },
-    )));
+            )));
   }
 
-  Widget _buildCryptoListView(BuildContext context, 
+  Widget _buildCryptoListView(BuildContext context,
       List<CryptoCurrency>? cryptos, CryptoCurrenciesBloc bloc) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Container(
-          padding: const EdgeInsets.only(left: 43),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                  margin: const EdgeInsets.only(left: 5, right: 5),
-                  child: Text("#", style: AppStyles.cryptoListHeaderTextStyle())),
-              Expanded(
-                child: Text(AppLocalizations.of(context).coin,
-                    textAlign: TextAlign.center,
-                    style: AppStyles.normalTextStyle()),
+    return Stack(children: [
+
+      RefreshIndicator(
+        onRefresh: bloc.refreshCurrencies,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Container(
+              padding: const EdgeInsets.only(left: 43),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                      margin: const EdgeInsets.only(left: 5, right: 5),
+                      child: Text("#",
+                          style: AppStyles.cryptoListHeaderTextStyle())),
+                  Expanded(
+                    child: Text(AppLocalizations.of(context).coin,
+                        textAlign: TextAlign.center,
+                        style: AppStyles.normalTextStyle()),
+                  ),
+                  Expanded(
+                    child: StreamBuilder(
+                      stream: bloc.fiatCurrencySelectedOptionStream,
+                      builder: (context, snapshot) {
+                        String? currency = snapshot.hasData
+                            ? snapshot.data
+                            : bloc.fiatCurrencies[0];
+
+                        return Text(
+                            AppLocalizations.of(context).price(currency!),
+                            textAlign: TextAlign.center,
+                            style: AppStyles.normalTextStyle());
+                      },
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(AppLocalizations.of(context).marketCap,
+                        textAlign: TextAlign.center,
+                        style: AppStyles.normalTextStyle()),
+                  )
+                ],
               ),
-              Expanded(
-                child: StreamBuilder(
-                  stream: bloc.fiatCurrencySelectedOptionStream,
-                  builder: (context, snapshot) {
-                    String? currency = snapshot.hasData ? snapshot.data : bloc.fiatCurrencies[0];
-                    
-                    return Text(AppLocalizations.of(context).price(currency!),
-                      textAlign: TextAlign.center,
-                      style: AppStyles.normalTextStyle());
-                },),
-              ),
-              Expanded(
-                child: Text(AppLocalizations.of(context).marketCap,
-                    textAlign: TextAlign.center,
-                    style: AppStyles.normalTextStyle()),
-              )
-            ],
-          ),
-        ),
-        Expanded(
-            child: ListView.builder(
+            ),
+            Expanded(
+                child: ListView.builder(
               padding: const EdgeInsets.all(0),
               itemCount: cryptos!.length,
               itemBuilder: (context, index) {
                 final crypto = cryptos[index];
                 final rank = index + 1;
 
-                return CryptoListItemComponent(cryptoCurrency: crypto, bloc: bloc, 
-                  context: context, rank: rank, onCryptoSelected: (crypto, index) => _cryptoSelected(crypto, index, context));
+                return CryptoListItemComponent(
+                    cryptoCurrency: crypto,
+                    bloc: bloc,
+                    context: context,
+                    rank: rank,
+                    onCryptoSelected: (crypto, index) =>
+                        _cryptoSelected(crypto, index, context));
               },
             ))
-      ],
-    );
+          ],
+        ),
+      ),
+      StreamBuilder(
+        stream: bloc.isBusyStream,
+        builder: (context, snapshot) {
+          return Visibility(
+            visible: snapshot.data ?? false,
+            child: 
+            Center(child: CircularProgressIndicator()));
+        },
+      )
+    ]);
   }
-  
-  Future _cryptoSelected(CryptoCurrency cryptoCurrency, int index, BuildContext context) async {
+
+  Future _cryptoSelected(
+      CryptoCurrency cryptoCurrency, int index, BuildContext context) async {
     bloc.cryptoCurrencySelected(cryptoCurrency, index);
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => BlocProvider(
-          bloc: CryptoCurrencyDetailsBloc(cryptoCurrency: cryptoCurrency, apiClient: bloc.apiClient, fiatCurrency: bloc.selectedFiatCurrency),
+          bloc: CryptoCurrencyDetailsBloc(
+              cryptoCurrency: cryptoCurrency,
+              apiClient: bloc.apiClient,
+              fiatCurrency: bloc.selectedFiatCurrency),
           child: CryptoCurrencyDetailsPage(),
         ),
       ),
     );
-
   }
 
-  void _fiatCurrencyDropDownSelected(String? fiatCurrency, CryptoCurrenciesBloc bloc) {
+  void _fiatCurrencyDropDownSelected(
+      String? fiatCurrency, CryptoCurrenciesBloc bloc) {
     bloc.fiatCurrencySelection.add(fiatCurrency);
   }
 }
