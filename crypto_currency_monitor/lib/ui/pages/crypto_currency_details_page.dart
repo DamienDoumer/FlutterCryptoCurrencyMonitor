@@ -123,9 +123,16 @@ class CryptoCurrencyDetailsPage extends BasePage<CryptoCurrencyDetailsBloc> {
                 ],
               ),
 
-              Container(
-                color: Colors.amber,
-                child: Text(bloc.cryptoDescription, style: AppStyles.secondaryTextStyle(), textAlign: TextAlign.center))
+              SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Expanded(
+                  child: Container(
+                    height: 300,
+                    alignment: Alignment.center,
+                    margin: const EdgeInsets.all(5),
+                    child: Text(bloc.cryptoDescription, style: AppStyles.secondaryTextStyle(), textAlign: TextAlign.center)),
+                ),
+              )
             ],)
         ],
       ),

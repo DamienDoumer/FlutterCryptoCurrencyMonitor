@@ -1,5 +1,5 @@
 {
-  "coin": "coin",
+  "coin": "Coin",
   "@coin": {
     "description": "The crypto currency"
   },

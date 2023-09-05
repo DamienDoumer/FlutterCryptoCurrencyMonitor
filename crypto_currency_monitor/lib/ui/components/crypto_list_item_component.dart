@@ -16,7 +16,8 @@ class CryptoListItemComponent extends StatelessWidget {
   int get index => rank - 1;
 
   const CryptoListItemComponent(
-      {super.key, required this.cryptoCurrency,
+      {super.key,
+      required this.cryptoCurrency,
       required this.bloc,
       required this.rank,
       required this.context,
@@ -27,9 +28,13 @@ class CryptoListItemComponent extends StatelessWidget {
     return Material(
       child: InkWell(
         child: Container(
-          decoration: BoxDecoration(border: Border(bottom: BorderSide(color: AppColors.shadowColor))),
+          decoration: BoxDecoration(
+              border: Border(bottom: BorderSide(color: AppColors.shadowColor))),
           height: 50,
-          child: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center, 
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
             Container(
                 alignment: Alignment.center,
                 child: StreamBuilder(
@@ -41,7 +46,7 @@ class CryptoListItemComponent extends StatelessWidget {
                               (snapshot.data!.$1 == index && snapshot.data!.$2)
                           ? Icons.favorite
                           : Icons.favorite_border;
-    
+
                       return IconButton(
                           onPressed: () => bloc.cryptoCurrencyFavoriteTapped(
                               cryptoCurrency, index),
@@ -54,39 +59,45 @@ class CryptoListItemComponent extends StatelessWidget {
                   textAlign: TextAlign.start,
                   style: AppStyles.cryptoListHeaderTextStyle()),
             ),
-            Expanded(
-                child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Container(
-                  padding: const EdgeInsets.only(right: 3),
-                  height: 35,
-                  child: RoundedNetworkImage(
-                    imageUrl: cryptoCurrency.image!,
-                    borderRadius: const BorderRadius.all(Radius.circular(30)),
+            Flexible(
+              fit: FlexFit.loose,
+              flex: 2,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.only(right: 3),
+                    height: 35,
+                    child: RoundedNetworkImage(
+                      imageUrl: cryptoCurrency.image!,
+                      borderRadius: const BorderRadius.all(Radius.circular(30)),
+                    ),
                   ),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(cryptoCurrency.name!,
-                        style: AppStyles.normalTextStyle()),
-                    Text(cryptoCurrency.symbol!,
-                        style: AppStyles.secondaryTextStyle())
-                  ],
-                )
-              ],
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        constraints: const BoxConstraints(maxWidth: 130),
+                        child: Text(cryptoCurrency.name!,
+                            style: AppStyles.normalTextStyle()),
+                      ),
+                      Text(cryptoCurrency.symbol!,
+                          style: AppStyles.secondaryTextStyle())
+                    ],
+                  )
+                ],
             )),
+            Expanded(
+              child:
+                Text(
+                  AppStyles.formatNumber(cryptoCurrency.currentPrice),
+                  style: AppStyles.normalTextStyle())),
             Expanded(
                 child: Center(
                     child: Text(
-                        AppStyles.formatNumber(cryptoCurrency.currentPrice),
-                        style: AppStyles.normalTextStyle()))),
-            Expanded(
-                child: Center(
-                    child: Text(AppStyles.formatNumber(cryptoCurrency.marketCap),
+                        AppStyles.formatNumber(cryptoCurrency.marketCap),
                         style: AppStyles.normalTextStyle())))
           ]),
         ),

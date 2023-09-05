@@ -117,6 +117,7 @@ class CryptoCurrenciesPage extends BasePage<CryptoCurrenciesBloc> {
                       child: Text("#",
                           style: AppStyles.cryptoListHeaderTextStyle())),
                   Expanded(
+                    flex: 2,
                     child: Text(AppLocalizations.of(context).coin,
                         textAlign: TextAlign.center,
                         style: AppStyles.normalTextStyle()),
@@ -130,9 +131,10 @@ class CryptoCurrenciesPage extends BasePage<CryptoCurrenciesBloc> {
                             : bloc.fiatCurrencies[0];
 
                         return Text(
-                            AppLocalizations.of(context).price(currency!),
-                            textAlign: TextAlign.center,
-                            style: AppStyles.normalTextStyle());
+                              AppLocalizations.of(context).price(currency!),
+                              textAlign: TextAlign.center,
+                              style: AppStyles.normalTextStyle(),
+                        );
                       },
                     ),
                   ),
