@@ -10,6 +10,8 @@ import '../../bloc/shared/bloc_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../data/crypto_currency.dart';
+import '../../infrastructure_services/shared/base_coin_geko_api_client.dart';
+import '../../service_locator.dart';
 import '../app_styles.dart';
 import '../components/crypto_list_item_component.dart';
 import '../views/rounded_network_image.dart';
@@ -187,7 +189,7 @@ class CryptoCurrenciesPage extends BasePage<CryptoCurrenciesBloc> {
         builder: (context) => BlocProvider(
           bloc: CryptoCurrencyDetailsBloc(
               cryptoCurrency: cryptoCurrency,
-              apiClient: bloc.apiClient,
+              apiClient: getIt.get<BaseCoinGekoAPIClient>(),
               fiatCurrency: bloc.selectedFiatCurrency),
           child: CryptoCurrencyDetailsPage(),
         ),
