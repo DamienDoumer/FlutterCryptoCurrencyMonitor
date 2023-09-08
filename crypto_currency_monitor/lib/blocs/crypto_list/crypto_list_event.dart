@@ -9,10 +9,13 @@ sealed class CryptoListEvent extends Equatable {
 
 class LoadCryptosEvent extends CryptoListEvent { }
 
+class RefreshCryptosEvent extends CryptoListEvent { }
+
 class CryptoCurrencyAddedToFavoriteEvent extends CryptoListEvent {
   final CryptoCurrency cryptoCurrency;
+  final int index;
 
-  const CryptoCurrencyAddedToFavoriteEvent({required this.cryptoCurrency});
+  const CryptoCurrencyAddedToFavoriteEvent({required this.cryptoCurrency, required this.index});
 
   @override
   List<Object> get props => [cryptoCurrency];
@@ -20,8 +23,10 @@ class CryptoCurrencyAddedToFavoriteEvent extends CryptoListEvent {
 
 class CryptoCurrencyRemovedFromFavoriteEvent extends CryptoListEvent {
   final CryptoCurrency cryptoCurrency;
+  final int index;
 
-  const CryptoCurrencyRemovedFromFavoriteEvent({required this.cryptoCurrency});
+  const CryptoCurrencyRemovedFromFavoriteEvent({required this.cryptoCurrency,
+  required this.index});
 
   @override
   List<Object> get props => [cryptoCurrency];

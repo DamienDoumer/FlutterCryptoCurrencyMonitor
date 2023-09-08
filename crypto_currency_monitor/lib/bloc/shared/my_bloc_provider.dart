@@ -5,28 +5,28 @@ import 'base_bloc.dart';
 import 'bloc.dart';
 
 
-class BlocProvider<T extends Bloc> extends StatefulWidget {
+class MyBlocProvider<T extends Bloc> extends StatefulWidget {
   
   final Widget child;
   final T bloc;
 
-  const BlocProvider({
+  const MyBlocProvider({
     super.key,
     required this.bloc,
     required this.child
   });
 
   static T of<T extends Bloc>(BuildContext context) {
-    final BlocProvider<T> provider = context.findAncestorWidgetOfExactType()!;
+    final MyBlocProvider<T> provider = context.findAncestorWidgetOfExactType()!;
     return provider.bloc;
   }
 
   @override
-  State createState() => _BlocProviderState();
+  State createState() => _MyBlocProviderState();
 }
 
 
-class _BlocProviderState extends State<BlocProvider> {
+class _MyBlocProviderState extends State<MyBlocProvider> {
   
   @override
   Widget build(BuildContext context) {

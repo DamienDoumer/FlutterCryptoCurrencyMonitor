@@ -1,4 +1,5 @@
-import 'package:crypto_currency_monitor/bloc/crypto_currencies_bloc.dart';
+
+import 'package:crypto_currency_monitor/blocs/crypto_list/crypto_list_bloc.dart';
 import 'package:crypto_currency_monitor/data/crypto_currency.dart';
 import 'package:flutter/material.dart';
 
@@ -8,7 +9,7 @@ import '../views/rounded_network_image.dart';
 
 class CryptoListItemComponent extends StatelessWidget {
   final CryptoCurrency cryptoCurrency;
-  final CryptoCurrenciesBloc bloc;
+  final CryptoListBloc bloc;
   final int rank;
   final BuildContext context;
   final Function(CryptoCurrency cryptoCurrency, int index) onCryptoSelected;
@@ -40,16 +41,30 @@ class CryptoListItemComponent extends StatelessWidget {
                 child: StreamBuilder(
                     stream: bloc.favoriteStream,
                     builder: (context, snapshot) {
-                      var icon = snapshot.hasData &&
+                      
+                      var isFav = snapshot.hasData &&
                               (snapshot.data?.$1 != null &&
                                   snapshot.data?.$2 != null) &&
                               (snapshot.data!.$1 == index && snapshot.data!.$2)
+                          ? true
+                          : false;
+                      var icon = isFav
                           ? Icons.favorite
                           : Icons.favorite_border;
 
                       return IconButton(
-                          onPressed: () => bloc.cryptoCurrencyFavoriteTapped(
-                              cryptoCurrency, index),
+                          onPressed: () async {
+                            if (isFav) { 
+                              bloc.add(CryptoCurrencyAddedToFavoriteEvent(
+                              cryptoCurrency: cryptoCurrency,
+                              index: index));
+                            }
+                            else {
+                              bloc.add(CryptoCurrencyRemovedFromFavoriteEvent(
+                              cryptoCurrency: cryptoCurrency,
+                              index: index));
+                            }
+                          },
                           icon: Icon(icon,
                               size: 20, color: AppColors.likeButtonColor));
                     })),
