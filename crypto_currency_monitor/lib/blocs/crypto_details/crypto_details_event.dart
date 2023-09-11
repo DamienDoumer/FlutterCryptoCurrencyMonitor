@@ -9,6 +9,14 @@ sealed class CryptoDetailsEvent extends Equatable {
 
 class LoadCryptoDetailsEvent extends CryptoDetailsEvent {
   final CryptoCurrency cryptoCurrency;
+  final String? fiatCurrency;
 
-  const LoadCryptoDetailsEvent({required this.cryptoCurrency});
+  const LoadCryptoDetailsEvent({required this.cryptoCurrency, 
+   required this.fiatCurrency});
+}
+
+class CryptoAddedToFavoriteEvent extends CryptoDetailsEvent {
+  final CryptoCurrency cryptoCurrency;
+
+  const CryptoAddedToFavoriteEvent({required this.cryptoCurrency});
 }

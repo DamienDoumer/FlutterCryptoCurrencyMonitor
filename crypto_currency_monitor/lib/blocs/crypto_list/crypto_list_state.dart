@@ -21,9 +21,13 @@ final class CryptoListLoadErrorState extends CryptoListState {
 }
 
 final class CryptoListLoadedState extends CryptoListState {
-  final List<CryptoCurrency> cryptos;
+  List<CryptoCurrency> cryptos;
+  late String? selectedFiatCurrency;
+  late CryptoCurrency selectedCryptoCurrency;
+  late int selectedCryptoCurrencyIndex;
 
-  const CryptoListLoadedState({this.cryptos = const<CryptoCurrency>[]});
+  CryptoListLoadedState({required this.cryptos,
+    required this.selectedFiatCurrency});
 
   @override
   List<Object> get props => [cryptos];

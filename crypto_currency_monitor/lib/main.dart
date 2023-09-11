@@ -1,7 +1,5 @@
 import 'dart:io';
 
-import 'package:crypto_currency_monitor/bloc/crypto_currencies_bloc.dart';
-import 'package:crypto_currency_monitor/bloc/shared/my_bloc_provider.dart';
 import 'package:crypto_currency_monitor/blocs/blocs.dart';
 import 'package:crypto_currency_monitor/service_locator.dart';
 import 'package:crypto_currency_monitor/simple_bloc_observer.dart';
@@ -12,8 +10,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'blocs/crypto_list/crypto_list_bloc.dart';
-import 'infrastructure_services/coin_geko_api_client.dart';
 import 'infrastructure_services/shared/base_coin_geko_api_client.dart';
 
 void main() {
@@ -36,8 +32,9 @@ class CryptoCurrencyApp extends StatelessWidget {
             apiClient: getIt.get<BaseCoinGekoAPIClient>())
             ..add(LoadCryptosEvent())),
 
-        BlocProvider(create: (context) => CryptoDetailsBloc())
-        
+        BlocProvider(create: (context) => 
+          CryptoDetailsBloc(apiClient: getIt.get<BaseCoinGekoAPIClient>()))
+
       ],
       child: MaterialApp(
         title: 'Crypto App',

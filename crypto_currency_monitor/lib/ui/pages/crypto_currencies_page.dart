@@ -7,7 +7,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 import '../../bloc/crypto_currencies_bloc.dart';
-import '../../bloc/shared/my_bloc_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../blocs/crypto_list/crypto_list_bloc.dart';
@@ -18,7 +17,7 @@ import '../app_styles.dart';
 import '../components/crypto_list_item_component.dart';
 import '../views/rounded_network_image.dart';
 
-class CryptoCurrenciesPage extends StatelessWidget {
+class CryptoCurrenciesPage extends BasePage<CryptoListBloc> {
   late EdgeInsets safeInsets;
 
   CryptoCurrenciesPage({super.key});
@@ -26,23 +25,22 @@ class CryptoCurrenciesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final topPadding = MediaQuery.of(context).padding.top;
-    final bottomPadding = MediaQuery.of(context).padding.bottom;
-    safeInsets = EdgeInsets.fromLTRB(0, topPadding, 0, bottomPadding);
+    super.build(context);
 
     return Scaffold(
-        body: BlocBuilder<CryptoListBloc, CryptoListState>(
-          builder: (context, state) {
+      body: BlocBuilder<CryptoListBloc, CryptoListState>(
+        builder: (context, state) {
 
-            if (state is CryptoListInitState ||
-                state is CryptoListLoadingState)
-                return AppStyles.buildLoadingUI();
-            else if (state is CryptoListLoadedState) {
-              return _buildUI(context, context.read<CryptoListBloc>(), state);
-            }
+          if (state is CryptoListInitState ||
+              state is CryptoListLoadingState) {
+            return AppStyles.buildLoadingUI();
+          } else if (state is CryptoListLoadedState) {
+            return _buildUI(context, bloc, state);
+          }
 
-          },
-        ));
+        return const Center(child: Text("Error"));
+      },
+    ));
   }
 
   Widget _buildUI(BuildContext context, CryptoListBloc bloc, 
@@ -94,23 +92,6 @@ class CryptoCurrenciesPage extends StatelessWidget {
     CryptoListLoadedState state) {
     return Expanded(
         child: _buildCryptoListView(context, state.cryptos, bloc));
-            
-      // return Expanded(
-      //   child: Container(
-      //       padding: const EdgeInsets.all(3),
-      //       child: StreamBuilder(
-      //         stream: bloc.cryptoCurrenciesStream,
-      //         builder: (context, snapshot) {
-      //           if (snapshot.hasData) {
-      //             return _buildCryptoListView(context, snapshot.data, bloc);
-      //           } else {
-      //             return Text(
-      //               AppLocalizations.of(context).loading,
-      //               style: AppStyles.h1TextStyle(),
-      //             );
-      //           }
-      //         },
-      //       )));
   }
 
   Widget _buildCryptoListView(BuildContext context,
@@ -190,7 +171,7 @@ class CryptoCurrenciesPage extends StatelessWidget {
           return Visibility(
             visible: snapshot.data ?? false,
             child: 
-            Center(child: CircularProgressIndicator()));
+            const Center(child: CircularProgressIndicator()));
         },
       )
     ]);
@@ -200,22 +181,24 @@ class CryptoCurrenciesPage extends StatelessWidget {
       CryptoCurrency cryptoCurrency, int index, BuildContext context) async {
     // bloc.cryptoCurrencySelected(cryptoCurrency, index);
     var bloc = context.read<CryptoListBloc>();
+    var cryptoLoadedState = (bloc.state as CryptoListLoadedState);
+
+    cryptoLoadedState.selectedCryptoCurrency = cryptoCurrency;
+    cryptoLoadedState.selectedCryptoCurrencyIndex = index;
+
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => MyBlocProvider(
-          bloc: CryptoCurrencyDetailsBloc(
-              cryptoCurrency: cryptoCurrency,
-              apiClient: getIt.get<BaseCoinGekoAPIClient>(),
-              fiatCurrency: bloc.selectedFiatCurrency),
-          child: CryptoCurrencyDetailsPage(),
-        ),
+        builder: (context) => CryptoCurrencyDetailsPage()
       ),
     );
   }
 
   void _fiatCurrencyDropDownSelected(
       String? fiatCurrency, CryptoListBloc bloc) {
+        
+    var cryptoLoadedState = (bloc.state as CryptoListLoadedState);
+    cryptoLoadedState.selectedFiatCurrency = fiatCurrency;
     bloc.fiatCurrencySelection.add(fiatCurrency);
   }
 }

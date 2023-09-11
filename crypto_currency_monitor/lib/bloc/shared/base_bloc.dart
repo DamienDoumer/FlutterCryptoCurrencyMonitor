@@ -1,14 +1,11 @@
 
 import 'dart:async';
 
-import 'bloc.dart';
-
-abstract class BaseBloc implements Bloc {
-  late bool isInitialized = false;
+mixin BaseBloc {
   late String _locale;
   late String _language;
   final busyController = StreamController<bool>();
-  
+
   String get locale => _locale;
   String get language => _language;
   Stream<bool> get isBusyStream => busyController.stream;
@@ -20,14 +17,7 @@ abstract class BaseBloc implements Bloc {
     _language = language;
   }
 
-
-  @override
-  void dispose() {
+  void closeStream() {
     busyController.close();
-  }
-
-  @override
-  Future initialize() async {
-    isInitialized = true;
   }
 }

@@ -5,12 +5,13 @@ import 'package:crypto_currency_monitor/data/crypto_currency.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../bloc/constants.dart';
+import '../../bloc/shared/base_bloc.dart';
 import '../../infrastructure_services/shared/base_coin_geko_api_client.dart';
 
 part 'crypto_list_event.dart';
 part 'crypto_list_state.dart';
 
-class CryptoListBloc extends Bloc<CryptoListEvent, CryptoListState> {
+class CryptoListBloc extends Bloc<CryptoListEvent, CryptoListState> with BaseBloc {
 
   late String locale;
   late String language;
@@ -49,9 +50,12 @@ class CryptoListBloc extends Bloc<CryptoListEvent, CryptoListState> {
     }
 
     try {
+
       //busyController.add(true);
       var cryptoCurrencies = await apiClient.getCryptoCurrencies(selectedFiatCurrency, language);
-      emitter(CryptoListLoadedState(cryptos: cryptoCurrencies));
+      var cryptoLoadedState = CryptoListLoadedState(cryptos: cryptoCurrencies,
+        selectedFiatCurrency: fiatCurrencies.first);
+      emitter(cryptoLoadedState);
       //_currenciesController.add(_cryptoCurrencies);
     } catch (e) {
       
@@ -73,4 +77,9 @@ class CryptoListBloc extends Bloc<CryptoListEvent, CryptoListState> {
 
   }
 
+  @override
+  Future<void> close() {
+    super.closeStream();
+    return super.close();
+  }
 }

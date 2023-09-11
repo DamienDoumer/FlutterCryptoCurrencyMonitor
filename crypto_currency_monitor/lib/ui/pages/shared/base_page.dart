@@ -1,7 +1,6 @@
 import 'package:crypto_currency_monitor/bloc/shared/base_bloc.dart';
 import 'package:flutter/material.dart';
-
-import '../../../bloc/shared/my_bloc_provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BasePage<T extends BaseBloc> extends StatelessWidget {
 
@@ -23,7 +22,7 @@ class BasePage<T extends BaseBloc> extends StatelessWidget {
     final bottomPadding = MediaQuery.of(context).padding.bottom;
     safeInsets = EdgeInsets.fromLTRB(0, topPadding, 0, bottomPadding);
 
-    _bloc = MyBlocProvider.of<T>(context);
+    _bloc = context.read<T>();
     var localization = Localizations.localeOf(context);
     _bloc.locale = localization.toString();
     _bloc.language = localization.languageCode;

@@ -1,35 +1,60 @@
+import 'package:crypto_currency_monitor/blocs/blocs.dart';
 import 'package:crypto_currency_monitor/ui/pages/shared/base_page.dart';
 import 'package:crypto_currency_monitor/ui/views/rounded_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../bloc/constants.dart';
 import '../../bloc/crypto_currency_details_bloc.dart';
+import '../../blocs/crypto_details/crypto_details_bloc.dart';
 import '../app_colors.dart';
 import '../app_styles.dart';
 
-class CryptoCurrencyDetailsPage extends BasePage<CryptoCurrencyDetailsBloc> {
+class CryptoCurrencyDetailsPage extends BasePage<CryptoDetailsBloc> {
   CryptoCurrencyDetailsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
 
+    var cryptoListBloc = BlocProvider.of<CryptoListBloc>(context);
+    var cryptoLoadedState = (cryptoListBloc.state as CryptoListLoadedState);
+    var cryptoDetailsBloc = BlocProvider.of<CryptoDetailsBloc>(context);
+
+    cryptoDetailsBloc.add(LoadCryptoDetailsEvent(cryptoCurrency: cryptoLoadedState.selectedCryptoCurrency,
+      fiatCurrency: cryptoLoadedState.selectedFiatCurrency));
+
     return Scaffold(
-      body: FutureBuilder(
-        future: bloc.initialize(),
-        builder: (context, snapShot) {
-          if (snapShot.connectionState == ConnectionState.done) {
-            return _buildUI(context, bloc);
-          } else {
+      body: BlocBuilder<CryptoDetailsBloc, CryptoDetailsState>(
+        builder: (context, state) {
+
+          if (state is CryptoDetailsInitState ||
+              state is CryptoDetailsLoadingState) {
             return AppStyles.buildLoadingUI();
+          } else if (state is CryptoDetailsLoadedState) {
+            return _buildUI(context, bloc);
           }
-        },
-      ),
+
+          return const Center(child: Text("Error"));
+        }),
     );
+
+    // return Scaffold(
+    //   body: FutureBuilder(
+    //     future: bloc.initialize(),
+    //     builder: (context, snapShot) {
+    //       if (snapShot.connectionState == ConnectionState.done) {
+    //         return _buildUI(context, bloc);
+    //       } else {
+    //         return AppStyles.buildLoadingUI();
+    //       }
+    //     },
+    //   ),
+    // );
   }
 
-  Widget _buildUI(BuildContext context, CryptoCurrencyDetailsBloc bloc) {
+  Widget _buildUI(BuildContext context, CryptoDetailsBloc bloc) {
 
     return Container(
       padding: safeInsets,
@@ -72,7 +97,7 @@ class CryptoCurrencyDetailsPage extends BasePage<CryptoCurrencyDetailsBloc> {
                     height: 50,
                     width: 50,
                     child: IconButton(
-                        onPressed: () => bloc.favoriteTapped(),
+                        onPressed: () => bloc.add(CryptoAddedToFavoriteEvent(cryptoCurrency: bloc.cryptoCurrency)),
                         icon: Icon(icon,
                             size: 30, color: AppColors.likeButtonColor)),
                   );
@@ -140,7 +165,6 @@ class CryptoCurrencyDetailsPage extends BasePage<CryptoCurrencyDetailsBloc> {
   }
 
   void _backButtonPressed(BuildContext context) async {
-    bloc.backButtonPressed();
     Navigator.of(context).pop();
   }
 }
