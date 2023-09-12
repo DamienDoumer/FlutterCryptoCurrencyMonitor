@@ -1,11 +1,12 @@
 
+import 'package:crypto_currency_monitor/blocs/blocs.dart';
 import 'package:crypto_currency_monitor/blocs/crypto_list/crypto_list_bloc.dart';
 import 'package:crypto_currency_monitor/data/crypto_currency.dart';
 import 'package:flutter/material.dart';
-
 import '../app_colors.dart';
 import '../app_styles.dart';
 import '../views/rounded_network_image.dart';
+import 'favorite_icon_button.dart';
 
 class CryptoListItemComponent extends StatelessWidget {
   final CryptoCurrency cryptoCurrency;
@@ -38,36 +39,12 @@ class CryptoListItemComponent extends StatelessWidget {
             children: [
             Container(
                 alignment: Alignment.center,
-                child: StreamBuilder(
-                    stream: bloc.favoriteStream,
-                    builder: (context, snapshot) {
-                      
-                      var isFav = snapshot.hasData &&
-                              (snapshot.data?.$1 != null &&
-                                  snapshot.data?.$2 != null) &&
-                              (snapshot.data!.$1 == index && snapshot.data!.$2)
-                          ? true
-                          : false;
-                      var icon = isFav
-                          ? Icons.favorite
-                          : Icons.favorite_border;
-
-                      return IconButton(
-                          onPressed: () async {
-                            if (isFav) { 
-                              bloc.add(CryptoCurrencyAddedToFavoriteEvent(
-                              cryptoCurrency: cryptoCurrency,
-                              index: index));
-                            }
-                            else {
-                              bloc.add(CryptoCurrencyRemovedFromFavoriteEvent(
-                              cryptoCurrency: cryptoCurrency,
-                              index: index));
-                            }
-                          },
-                          icon: Icon(icon,
-                              size: 20, color: AppColors.likeButtonColor));
-                    })),
+                child: FavoriteIconButton(
+                  isFavorite: false,
+                  favoritePressed: (isFavorite) {
+                  bloc.add(CryptoCurrencyAddedToFavoriteEvent(
+                    cryptoCurrency: cryptoCurrency, index: index));
+                })),
             SizedBox(
               width: 30,
               child: Text(rank.toString(),

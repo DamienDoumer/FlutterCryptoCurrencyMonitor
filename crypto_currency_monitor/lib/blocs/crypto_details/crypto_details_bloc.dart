@@ -13,9 +13,6 @@ part 'crypto_details_state.dart';
 
 class CryptoDetailsBloc extends Bloc<CryptoDetailsEvent, CryptoDetailsState> with BaseBloc {
   
-  final _favoriteController = StreamController<bool>();
-  final _currencyDetailsController = StreamController<DetailedCryptoCurrency>();
-  bool _isFavorite = false;
   String cryptoDescription = "";
   String price = "";
   String ath = "";
@@ -26,8 +23,6 @@ class CryptoDetailsBloc extends Bloc<CryptoDetailsEvent, CryptoDetailsState> wit
   late CryptoCurrency cryptoCurrency;
   late final BaseCoinGekoAPIClient apiClient;
   late DetailedCryptoCurrency detailedCryptoCurrency;
-
-  Stream<bool> get favoriteStream => _favoriteController.stream;
   
   CryptoDetailsBloc({required this.apiClient}) : super(CryptoDetailsInitState()) {
     on<LoadCryptoDetailsEvent>(_onLoadCryptoDetailsEvent);
@@ -40,7 +35,6 @@ class CryptoDetailsBloc extends Bloc<CryptoDetailsEvent, CryptoDetailsState> wit
       cryptoCurrency = event.cryptoCurrency;
       fiatCurrency = event.fiatCurrency as String;
       
-      _isFavorite = cryptoCurrency.isFavorite;
       detailedCryptoCurrency = await apiClient.getCryptoCurrencyDetails(cryptoCurrency.id!, locale);
             
       if (language.toLowerCase() == "fr") {
@@ -61,7 +55,6 @@ class CryptoDetailsBloc extends Bloc<CryptoDetailsEvent, CryptoDetailsState> wit
 
     } catch (e) {
       emitter(CryptoDetailsLoadErrorState(error: e.toString()));
-      _currencyDetailsController.addError(e);
     }
   }
 

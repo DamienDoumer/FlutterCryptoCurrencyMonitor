@@ -17,22 +17,8 @@ class CryptoListBloc extends Bloc<CryptoListEvent, CryptoListState> with BaseBlo
   late String language;
 
   late final BaseCoinGekoAPIClient apiClient;
-  late String selectedFiatCurrency;
   List<String> fiatCurrencies = [ Constants.USDCode, Constants.EURCode ];
-  
-  final _fiatCurrencyController = StreamController<String?>();
-  final _currenciesController = StreamController<List<CryptoCurrency>?>();
-  final _fiatCurrencySelectedOptionController = StreamController<String?>.broadcast();
-  final _favoriteController = StreamController<(int, bool)>.broadcast();
-  final busyController = StreamController<bool>();
-
-  Sink<String?> get fiatCurrencySelection => _fiatCurrencyController.sink;
-  Stream<List<CryptoCurrency>?> get cryptoCurrenciesStream => _currenciesController.stream;
-  Stream<String?> get fiatCurrencySelectedOptionStream => _fiatCurrencySelectedOptionController.stream;
-  Stream<(int, bool)> get favoriteStream => _favoriteController.stream;
-  Stream<bool> get isBusyStream => busyController.stream;
-
-  
+    
   CryptoListBloc({required this.apiClient}) 
     : super(CryptoListInitState()) {
 
@@ -40,18 +26,17 @@ class CryptoListBloc extends Bloc<CryptoListEvent, CryptoListState> with BaseBlo
     on<RefreshCryptosEvent>(_onRefreshCryptosEvent);
     on<CryptoCurrencyAddedToFavoriteEvent>(_onCryptoAddedToFavorite);
     on<CryptoCurrencyRemovedFromFavoriteEvent>(_onCryptoRemovedFromFavorite);
+    on<FiatCurrencySelectedEvent>(_onFiatCurrencySelected);
   }
 
   Future _onLoadCryptos(LoadCryptosEvent event, Emitter<CryptoListState> emitter) async {
-    
     //If we're initializing, set the selected currency to this state.
-    if (state is CryptoListInitState) {
-      selectedFiatCurrency = fiatCurrencies.first;
-    }
+    var selectedFiatCurrency = fiatCurrencies.first;
 
     try {
 
-      //busyController.add(true);
+      isBusySink.add(true);
+
       var cryptoCurrencies = await apiClient.getCryptoCurrencies(selectedFiatCurrency, language);
       var cryptoLoadedState = CryptoListLoadedState(cryptos: cryptoCurrencies,
         selectedFiatCurrency: fiatCurrencies.first);
@@ -61,7 +46,7 @@ class CryptoListBloc extends Bloc<CryptoListEvent, CryptoListState> with BaseBlo
       
       emitter(CryptoListLoadErrorState(error: e.toString()));
     } finally {
-      //busyController.add(false);
+      isBusySink.add(false);
     }
   }
 
@@ -69,8 +54,31 @@ class CryptoListBloc extends Bloc<CryptoListEvent, CryptoListState> with BaseBlo
 
   }
 
-  Future _onRefreshCryptosEvent(RefreshCryptosEvent event, Emitter<CryptoListState> emitter) async {
+  Future _onFiatCurrencySelected(FiatCurrencySelectedEvent event, Emitter<CryptoListState> emitter) async {    
 
+    isBusySink.add(true);
+
+    var cryptoCurrencies = await apiClient.getCryptoCurrencies(event.fiatCurrency, language);
+    
+    isBusySink.add(false);
+
+    emitter((state as CryptoListLoadedState)
+      .copyWith(
+        cryptos: cryptoCurrencies,
+        selectedFiatCurrency: event.fiatCurrency));
+  }
+
+  Future _onRefreshCryptosEvent(RefreshCryptosEvent event, Emitter<CryptoListState> emitter) async {
+    
+    isBusySink.add(true);
+
+    var cryptoCurrencies = await apiClient.getCryptoCurrencies((state as CryptoListLoadedState).selectedFiatCurrency, language);
+
+    isBusySink.add(false);
+    
+    emitter((state as CryptoListLoadedState)
+      .copyWith(
+        cryptos: cryptoCurrencies));
   }
 
   Future _onCryptoRemovedFromFavorite(CryptoCurrencyRemovedFromFavoriteEvent event, Emitter<CryptoListState> emitter) async {
@@ -79,6 +87,7 @@ class CryptoListBloc extends Bloc<CryptoListEvent, CryptoListState> with BaseBlo
 
   @override
   Future<void> close() {
+
     super.closeStream();
     return super.close();
   }

@@ -4,11 +4,12 @@ import 'dart:async';
 mixin BaseBloc {
   late String _locale;
   late String _language;
-  final busyController = StreamController<bool>();
+  final _busyController = StreamController<bool>();
 
   String get locale => _locale;
   String get language => _language;
-  Stream<bool> get isBusyStream => busyController.stream;
+  Stream<bool> get isBusyStream => _busyController.stream;
+  StreamSink<bool> get isBusySink => _busyController.sink;
 
   set locale(String locale) {
     _locale = locale;
@@ -18,6 +19,6 @@ mixin BaseBloc {
   }
 
   void closeStream() {
-    busyController.close();
+    _busyController.close();
   }
 }

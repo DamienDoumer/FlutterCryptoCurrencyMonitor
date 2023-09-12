@@ -11,6 +11,12 @@ class LoadCryptosEvent extends CryptoListEvent { }
 
 class RefreshCryptosEvent extends CryptoListEvent { }
 
+class FiatCurrencySelectedEvent extends CryptoListEvent {
+  final String fiatCurrency;
+  
+  const FiatCurrencySelectedEvent({required this.fiatCurrency});
+ }
+
 class CryptoCurrencyAddedToFavoriteEvent extends CryptoListEvent {
   final CryptoCurrency cryptoCurrency;
   final int index;

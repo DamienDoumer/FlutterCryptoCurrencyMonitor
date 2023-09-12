@@ -1,15 +1,14 @@
-import 'package:crypto_currency_monitor/bloc/crypto_currency_details_bloc.dart';
 import 'package:crypto_currency_monitor/ui/app_colors.dart';
 import 'package:crypto_currency_monitor/ui/pages/crypto_currency_details_page.dart';
 import 'package:crypto_currency_monitor/ui/pages/shared/base_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-
-import '../../bloc/crypto_currencies_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../blocs/crypto_details/crypto_details_bloc.dart';
 import '../../blocs/crypto_list/crypto_list_bloc.dart';
+import '../../blocs/crypto_list/fiat_option_cubit/fiat_option_cubit.dart';
 import '../../data/crypto_currency.dart';
 import '../../infrastructure_services/shared/base_coin_geko_api_client.dart';
 import '../../service_locator.dart';
@@ -17,10 +16,10 @@ import '../app_styles.dart';
 import '../components/crypto_list_item_component.dart';
 import '../views/rounded_network_image.dart';
 
-class CryptoCurrenciesPage extends BasePage<CryptoListBloc> {
+class CryptoListPage extends BasePage<CryptoListBloc> {
   late EdgeInsets safeInsets;
 
-  CryptoCurrenciesPage({super.key});
+  CryptoListPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -69,19 +68,20 @@ class CryptoCurrenciesPage extends BasePage<CryptoListBloc> {
         Container(
             width: 70,
             margin: const EdgeInsets.fromLTRB(5, 0, 10, 0),
-            child: StreamBuilder(
-              stream: bloc.fiatCurrencySelectedOptionStream,
+            child: BlocBuilder<FiatOptionCubit, FiatOptionCubitState>(
               builder: (context, snapshot) {
                 return DropdownButton<String>(
-                    value: snapshot.hasData
-                        ? snapshot.data
-                        : bloc.fiatCurrencies.first,
-                    items: bloc.fiatCurrencies
-                        .map((cur) =>
-                            DropdownMenuItem(value: cur, child: Text(cur)))
-                        .toList(),
-                    onChanged: (fiatCur) =>
-                        _fiatCurrencyDropDownSelected(fiatCur, bloc));
+                  value: snapshot.fiatCurrency != ""
+                      ? snapshot.fiatCurrency
+                      : bloc.fiatCurrencies.first,
+                  items: bloc.fiatCurrencies
+                      .map((cur) =>
+                          DropdownMenuItem(value: cur, child: Text(cur)))
+                      .toList(),
+                  onChanged: (fiatCur) {
+                    bloc.add(FiatCurrencySelectedEvent(fiatCurrency: fiatCur as String));
+                    context.read<FiatOptionCubit>().dropDownSelectionChanged(fiatCur);
+                });
               },
             ))
       ],
@@ -91,11 +91,11 @@ class CryptoCurrenciesPage extends BasePage<CryptoListBloc> {
   Widget _createBody(BuildContext context, CryptoListBloc bloc, 
     CryptoListLoadedState state) {
     return Expanded(
-        child: _buildCryptoListView(context, state.cryptos, bloc));
+        child: _buildCryptoListView(context, state, bloc));
   }
 
   Widget _buildCryptoListView(BuildContext context,
-      List<CryptoCurrency>? cryptos, CryptoListBloc bloc) {
+      CryptoListLoadedState state, CryptoListBloc bloc) {
     return Stack(children: [
 
       RefreshIndicator(
@@ -122,15 +122,14 @@ class CryptoCurrenciesPage extends BasePage<CryptoListBloc> {
                         style: AppStyles.normalTextStyle()),
                   ),
                   Expanded(
-                    child: StreamBuilder(
-                      stream: bloc.fiatCurrencySelectedOptionStream,
+                    child: BlocBuilder<FiatOptionCubit, FiatOptionCubitState>(
                       builder: (context, snapshot) {
-                        String? currency = snapshot.hasData
-                            ? snapshot.data
-                            : bloc.fiatCurrencies[0];
+                        String currency = snapshot.fiatCurrency != ""
+                            ? snapshot.fiatCurrency
+                            : bloc.fiatCurrencies.first;
 
                         return Text(
-                              AppLocalizations.of(context).price(currency!),
+                              AppLocalizations.of(context).price(currency),
                               textAlign: TextAlign.center,
                               style: AppStyles.normalTextStyle(),
                         );
@@ -148,9 +147,9 @@ class CryptoCurrenciesPage extends BasePage<CryptoListBloc> {
             Expanded(
               child: ListView.builder(
               padding: const EdgeInsets.all(0),
-              itemCount: cryptos!.length,
+              itemCount: state.cryptos!.length,
               itemBuilder: (context, index) {
-                final crypto = cryptos[index];
+                final crypto = state.cryptos[index];
                 final rank = index + 1;
 
                 return CryptoListItemComponent(
@@ -165,6 +164,11 @@ class CryptoCurrenciesPage extends BasePage<CryptoListBloc> {
           ],
         ),
       ),
+      
+      // Visibility(
+      //   visible: state.isBusy,
+      //   child: 
+      //     const Center(child: CircularProgressIndicator())
       StreamBuilder(
         stream: bloc.isBusyStream,
         builder: (context, snapshot) {
@@ -189,16 +193,19 @@ class CryptoCurrenciesPage extends BasePage<CryptoListBloc> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => CryptoCurrencyDetailsPage()
+        builder: (context) => BlocProvider<CryptoDetailsBloc>(
+          create: (context) {
+            return CryptoDetailsBloc(apiClient: getIt.get<BaseCoinGekoAPIClient>())
+              ..add(LoadCryptoDetailsEvent(cryptoCurrency: cryptoLoadedState.selectedCryptoCurrency!,
+                fiatCurrency: cryptoLoadedState.selectedFiatCurrency));
+          },
+          child: CryptoCurrencyDetailsPage())
       ),
     );
-  }
+    
+    var cryptoDetailsBloc = BlocProvider.of<CryptoDetailsBloc>(context);
 
-  void _fiatCurrencyDropDownSelected(
-      String? fiatCurrency, CryptoListBloc bloc) {
-        
-    var cryptoLoadedState = (bloc.state as CryptoListLoadedState);
-    cryptoLoadedState.selectedFiatCurrency = fiatCurrency;
-    bloc.fiatCurrencySelection.add(fiatCurrency);
+    cryptoDetailsBloc.add(LoadCryptoDetailsEvent(cryptoCurrency: cryptoLoadedState.selectedCryptoCurrency!,
+      fiatCurrency: cryptoLoadedState.selectedFiatCurrency));
   }
 }
