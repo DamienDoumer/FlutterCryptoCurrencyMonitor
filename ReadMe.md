@@ -1,7 +1,7 @@
 # Crypto Currency Monitor
-This is a sample project built in flutter, its aim is to leveerage flutter to built a nice app.
+This is a sample project built in flutter, its aim is to use flutter's features to build a simple demo app.
 It uses the public coin geko API.
 
-for the bloc + rx pattern, I used pure dart and implemented all from scratch.
-Checkout this tutorial for more insight about the approach I used: https://www.kodeco.com/31973428-getting-started-with-the-bloc-pattern 
-To add localization to your fluter app, check this out: https://docs.flutter.dev/ui/accessibility-and-localization/internationalization
+#NOTE!!!
+For the version of this app with manual implementation of the BLoC pattern (Without any external library)
+__CHECKOUT__ to the __custom_bloc_architecture__ branch.
